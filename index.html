@@ -278,7 +278,12 @@ function triggerBell(a, b, g, detune = 0, volume = 0) {
     document.getElementById('enable-button').addEventListener('click', async () => {
       await setupSampler();
       log("Button clicked. Triggering sound.");
-      triggerBell();
+
+      if (sampler && gainNode) {
+        // Trigger a test note at medium velocity to confirm sound is working
+        sampler.triggerAttack("C4", undefined, 0.7);
+        log("Initial test note triggered.");
+      }
 
       const enableGyro = () => {
         window.addEventListener('devicemotion', (event) => {
