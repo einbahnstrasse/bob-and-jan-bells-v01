@@ -198,9 +198,6 @@
   </div>
 
   <script>
-    let sampler;
-    const gainNode = new Tone.Gain().toDestination();
-
     function log(message) {
       const logDiv = document.getElementById("debug-log");
       if (logDiv) {
@@ -217,45 +214,36 @@
     function updateGraph(ctx, dataArray, newVal) {
       if (dataArray.length >= maxPoints) dataArray.shift();
       dataArray.push(newVal);
-
       const min = Math.min(...dataArray);
       const max = Math.max(...dataArray);
       const range = max - min || 1;
-
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       ctx.beginPath();
-
       dataArray.forEach((val, i) => {
         const x = (i / maxPoints) * ctx.canvas.width;
         const y = ctx.canvas.height * (1 - (val - min) / range);
         ctx.lineTo(x, y);
       });
-
       ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--accent');
       ctx.stroke();
     }
 
-    async function setupSampler() {
+    let sampler;
+    async function playSound() {
       await Tone.start();
       log("Tone.js started");
-
       sampler = new Tone.Sampler({
-        urls: { C4: "./media/archeos-bell.wav" },
-        onload: () => log("Sampler loaded."),
-      }).connect(gainNode);
+        "C4": "./media/archeos-bell.wav"
+      }, {
+        onload: () => {
+          log("Sampler loaded.");
+        }
+      }).toDestination();
     }
 
-    function triggerBell(detune = 0, volume = 0) {
-      if (!sampler) return;
-      sampler.volume.value = volume;
-      sampler.triggerAttack("C4", undefined, 1, detune);
-      log(`Triggered bell | Detune: ${detune.toFixed(2)} cents | Volume: ${volume.toFixed(2)} dB`);
-    }
-
-    document.getElementById('enable-button').addEventListener('click', async () => {
-      await setupSampler();
-      log("Button clicked. Triggering sound.");
-      triggerBell();
+    document.getElementById('enable-button').addEventListener('click', () => {
+      log("Button clicked. Triggering sound init.");
+      playSound();
 
       const enableGyro = () => {
         window.addEventListener('devicemotion', (event) => {
@@ -271,13 +259,10 @@
           updateGraph(betaChart.getContext('2d'), betaData, b);
           updateGraph(gammaChart.getContext('2d'), gammaData, g);
 
-          // Map beta (X) to pitch in cents (±500)
-          const detune = Math.max(-500, Math.min(500, b * 3));
-
-          // Map gamma (Y) to volume in dB (from -20 to 0)
-          const volume = Math.max(-20, Math.min(0, g / 10));
-
-          triggerBell(detune, volume);
+          if (sampler && Math.abs(b) > 30) {
+            sampler.triggerAttack("C4");
+            log("Sampler triggered due to beta tilt: " + b.toFixed(2));
+          }
         });
       };
 
