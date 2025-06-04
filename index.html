@@ -198,23 +198,30 @@
     </div>
   </div>
 
+  <div style="margin-top: 1rem;">
+    <label for="volume-slider">Volume</label><br>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1" style="width: 90%;">
+  </div>
+
   <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      log("Tone defined in inline script?", typeof Tone !== 'undefined');
     // let sampler;
     // const gainNode = new Tone.Gain().toDestination();
     let sampler;
     let gainNode;  // declared here
 
-    async function setupSampler() {
-      await Tone.start();
-      log("Tone.js started");
+    // async function setupSampler() {
+    //   await Tone.start();
+    //   log("Tone.js started");
 
-      gainNode = new Tone.Gain(1).toDestination();  // properly initialized after Tone.start()
+    //   gainNode = new Tone.Gain(1).toDestination();  // properly initialized after Tone.start()
 
-      sampler = new Tone.Sampler({
-        urls: { C4: "./media/archeos-bell.wav" },
-        onload: () => log("Sampler loaded."),
-      }).connect(gainNode);
-    }
+    //   sampler = new Tone.Sampler({
+    //     urls: { C4: "./media/archeos-bell.wav" },
+    //     onload: () => log("Sampler loaded."),
+    //   }).connect(gainNode);
+    // }
 
     function log(message) {
       const logDiv = document.getElementById("debug-log");
@@ -347,18 +354,24 @@ const noteMap = [
   "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"
 ];
 
-document.getElementById('volume-slider').addEventListener('input', (e) => {
-  const val = parseFloat(e.target.value);
-  gainNode.gain.value = val;
-  log(`Master volume set to: ${val.toFixed(2)}`);
+// document.getElementById('volume-slider').addEventListener('input', (e) => {
+//   const val = parseFloat(e.target.value);
+//   gainNode.gain.value = val;
+//   log(`Master volume set to: ${val.toFixed(2)}`);
+// });
+
+  const volumeSlider = document.getElementById('volume-slider');
+  if (volumeSlider) {
+    volumeSlider.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      gainNode.gain.value = val;
+      log(`Master volume set to: ${val.toFixed(2)}`);
+    });
+  } else {
+    log("⚠️ Volume slider not found in DOM.");
+  }
 });
-
 </script>
-
-  <div style="margin-top: 1rem;">
-    <label for="volume-slider">Volume</label><br>
-    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1" style="width: 90%;">
-  </div>
 
   <div id="debug-log" style="
       width: 90%;
@@ -375,14 +388,6 @@ document.getElementById('volume-slider').addEventListener('input', (e) => {
     ">
     <strong>Debug Console:</strong>
   </div>
-
-  <script>
-    log("Tone defined in inline script?", typeof Tone !== 'undefined');  // <- should log "true"
-    
-    // everything from log(), playSound(), gyro listener, theme toggle, etc.
-    // including sampler creation and Tone.Sampler triggerAttack calls
-    
-  </script>
 
 </body>
 </html>
