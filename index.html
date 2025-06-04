@@ -2,238 +2,78 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gyro Test</title>
+  <title>Tone.js Test - Arceus Bell</title>
   <style>
-    :root {
-      --bg-color: #121212;
-      --text-color: #fff;
-      --box-bg: #1e1e1e;
-      --accent: #33aaff;
-    }
-
-    body.light {
-      --bg-color: #f0f0f0;
-      --text-color: #000;
-      --box-bg: white;
-      --accent: #007aff;
-    }
-
     body {
       font-family: sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      height: 100vh;
-      margin: 0;
-      background: var(--bg-color);
-      color: var(--text-color);
-      text-align: center;
-      padding: 1em;
-      transition: background 0.3s, color 0.3s;
+      background: #121212;
+      color: #ffffff;
+      padding: 2em;
     }
-
-    h1 {
-      margin-bottom: 0.5rem;
-    }
-
-    .byline {
-      font-size: 0.9rem;
-      margin: 0.2rem 0;
-    }
-
-    .byline a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    .canvas-container {
-      position: relative;
-      margin-top: 1rem;
-    }
-
-    .gyro-label {
-      position: absolute;
-      bottom: 8px;
-      left: 10px;
-      font-size: 0.9rem;
-      color: var(--text-color);
-      background: rgba(0, 0, 0, 0.4);
-      padding: 2px 6px;
-      border-radius: 4px;
-    }
-
-    canvas {
-      background: var(--box-bg);
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    #enable-button {
-      margin-top: 1rem;
-      padding: 1rem 2rem;
-      font-size: 1rem;
-      background-color: var(--accent);
+    button {
+      padding: 1em 2em;
+      font-size: 1em;
+      background: #33aaff;
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      margin-bottom: 1em;
     }
-    #enable-button:hover {
-      background-color: #007aff;
-    }
-
-    .toggle-label {
-      margin-top: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 1rem;
-    }
-
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 34px;
-    }
-
-    .switch input { display: none; }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #ccc;
-      transition: 0.4s;
-      border-radius: 34px;
-    }
-
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      transition: 0.4s;
-      border-radius: 50%;
-    }
-
-    input:checked + .slider {
-      background-color: var(--accent);
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(26px);
-    }
-
-    #overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.85);
-      color: white;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem;
-      font-size: 0.9rem;
-      text-align: left;
-      z-index: 999;
-    }
-    #overlay.active {
-      display: flex;
-    }
-    #overlay-content {
+    #debug-console {
+      white-space: pre-wrap;
+      background: #1e1e1e;
+      padding: 1em;
+      border-radius: 8px;
       max-width: 600px;
     }
-    #overlay-close {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      font-size: 1.5rem;
-      background: none;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    #debugConsole {
-      width: 100%;
-      max-width: 400px;
-      background: #222;
-      color: #0f0;
-      padding: 0.5rem;
-      margin-top: 1rem;
-      font-family: monospace;
-      font-size: 0.75rem;
-      overflow-y: auto;
-      height: 100px;
-      border-radius: 6px;
-      display: block;
-    }
   </style>
-
-  <!-- Load Tone.js first and only then the other scripts -->
-  <script>
-    const toneScript = document.createElement('script');
-    toneScript.src = "https://cdn.jsdelivr.net/npm/tone@latest";
-    toneScript.onload = () => {
-      console.log("Tone.js loaded successfully.");
-      ['synth-engine.js', 'gyro-graph.js', 'synth-bridge.js'].forEach(src => {
-        const s = document.createElement('script');
-        s.src = src;
-        s.defer = true;
-        document.head.appendChild(s);
-      });
-    };
-    toneScript.onerror = () => {
-      console.error("Failed to load Tone.js");
-    };
-    document.head.appendChild(toneScript);
-  </script>
+  <script src="https://unpkg.com/tone@14.8.49/build/Tone.js" defer></script>
 </head>
-<body class="dark">
-  <h1>Bob & Jan's Bells</h1>
-  <div class="byline">
-    Love, <a href="https://louisgoldford.com" target="_blank">Louis</a> and Eszter
-  </div>
-  <div class="byline">
-    <a href="#" id="info-link">What the hell is this thing?</a>
-  </div>
+<body>
+  <h1>Arceus Bell Tone.js Test</h1>
+  <button id="play-button">Play Arceus Bell</button>
+  <div id="debug-console">Debug output:\n</div>
 
-  <div class="canvas-container">
-    <canvas id="alphaChart" width="300" height="100"></canvas>
-    <div class="gyro-label" id="alphaLabel">Alpha (Z): 0.00</div>
-  </div>
-  <div class="canvas-container">
-    <canvas id="betaChart" width="300" height="100"></canvas>
-    <div class="gyro-label" id="betaLabel">Beta (X): 0.00</div>
-  </div>
-  <div class="canvas-container">
-    <canvas id="gammaChart" width="300" height="100"></canvas>
-    <div class="gyro-label" id="gammaLabel">Gamma (Y): 0.00</div>
-  </div>
+  <script>
+    const debug = (msg) => {
+      const box = document.getElementById("debug-console");
+      box.textContent += msg + "\n";
+    };
 
-  <button id="enable-button">Enable Gyro</button>
+    let player;
 
-  <label class="toggle-label">
-    Dark Mode
-    <div class="switch">
-      <input type="checkbox" id="theme-toggle" checked>
-      <span class="slider"></span>
-    </div>
-  </label>
+    window.addEventListener("DOMContentLoaded", async () => {
+      try {
+        debug("Waiting for Tone.js to load...");
 
-  <div id="overlay">
-    <div id="overlay-content">
-      <button id="overlay-close">&times;</button>
-      <p>This is a placeholder explanation of what this synth does. You can add your own detailed, non-musician-friendly description here later.</p>
-    </div>
-  </div>
+        await Tone.start();
+        debug("Tone.js started successfully.");
 
-  <div id="debugConsole"></div>
+        const audioUrl = "https://www.dropbox.com/scl/fi/p5z5w1xhyo7ts7b6ghzco/Arceus-bell.mp3?rlkey=2k0fw2gxj7v4m6v7wxqj0yc8y&dl=1";
+
+        debug("Loading Arceus Bell audio from Dropbox...");
+        player = new Tone.Player({
+          url: audioUrl,
+          autostart: false,
+          onload: () => debug("Audio file loaded successfully."),
+          onerror: (e) => debug("Error loading audio file: " + e),
+        }).toDestination();
+
+        document.getElementById("play-button").addEventListener("click", async () => {
+          try {
+            await Tone.start();
+            debug("Playback triggered.");
+            player.start();
+          } catch (err) {
+            debug("Error on playback: " + err.message);
+          }
+        });
+
+      } catch (e) {
+        debug("Tone.js failed to start: " + e.message);
+      }
+    });
+  </script>
 </body>
 </html>
