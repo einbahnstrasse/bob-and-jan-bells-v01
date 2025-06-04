@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Test: Tone.js Audio Load</title>
+  <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js"></script>
+  <style>
+    body {
+      background: #111;
+      color: #eee;
+      font-family: sans-serif;
+      padding: 2rem;
+      text-align: center;
+    }
+    button {
+      padding: 0.8rem 1.2rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    #debug {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+      background: #222;
+      padding: 1rem;
+      border: 1px solid #444;
+    }
+  </style>
+</head>
+<body>
+  <h1>Test: Play Arceus Bell</h1>
+  <button id="playButton">Play Arceus Bell</button>
+
+  <div id="debug">Waiting for Tone.js to load...</div>
+
+  <script>
+    const log = (msg) => {
+      console.log(msg);
+      document.getElementById("debug").textContent += `\n${msg}`;
+    };
+
+    let player;
+
+    document.getElementById("playButton").addEventListener("click", async () => {
+      log("User clicked play button.");
+      try {
+        await Tone.start();
+        log("Tone.js started successfully.");
+
+        player = new Tone.Player({
+          url: "./media/archeos-bell.wav",
+          autostart: true,
+          onload: () => log("Audio loaded and started playing."),
+          onerror: (e) => log("Tone.Player error: " + e)
+        }).toDestination();
+      } catch (err) {
+        log("Error while initializing Tone or player: " + err.message);
+      }
+    });
+  </script>
+</body>
+</html>
