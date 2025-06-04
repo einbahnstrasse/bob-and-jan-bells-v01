@@ -246,20 +246,21 @@
       }).connect(gainNode);
     }
 
-    function triggerBell(detune = 0, volume = 0) {
-      if (!sampler) return;
-      sampler.volume.value = volume;
-      if (sampler && Math.abs(b) > 30) {
-  const normalizedAlpha = Math.max(-180, Math.min(180, a));
-  const alphaIndex = Math.floor((normalizedAlpha + 180) / 360 * noteMap.length);
-  const pitchNote = noteMap[alphaIndex];
-  const velocity = Math.max(0.1, Math.min(1, Math.abs(b) / 90));
-  sampler.triggerAttack(pitchNote, undefined, velocity);
-  log(`Triggered note: ${pitchNote}, Velocity: ${velocity.toFixed(2)} (α=${a.toFixed(2)} β=${b.toFixed(2)})`);
-}
-      log(`Triggered bell | Detune: ${detune.toFixed(2)} cents | Volume: ${volume.toFixed(2)} dB`);
-    }
+function triggerBell(a, b, g, detune = 0, volume = 0) {
+  if (!sampler) return;
+  sampler.volume.value = volume;
 
+  if (Math.abs(b) > 30) {
+    const normalizedAlpha = Math.max(-180, Math.min(180, a));
+    const alphaIndex = Math.floor((normalizedAlpha + 180) / 360 * noteMap.length);
+    const pitchNote = noteMap[alphaIndex];
+    const velocity = Math.max(0.1, Math.min(1, Math.abs(b) / 90));
+    sampler.triggerAttack(pitchNote, undefined, velocity);
+    log(`Triggered note: ${pitchNote}, Velocity: ${velocity.toFixed(2)} (α=${a.toFixed(2)} β=${b.toFixed(2)})`);
+  }
+
+  log(`Triggered bell | Detune: ${detune.toFixed(2)} cents | Volume: ${volume.toFixed(2)} dB`);
+}
     document.getElementById('enable-button').addEventListener('click', async () => {
       await setupSampler();
       log("Button clicked. Triggering sound.");
@@ -285,7 +286,7 @@
           // Map gamma (Y) to volume in dB (from -20 to 0)
           const volume = Math.max(-20, Math.min(0, g / 10));
 
-          triggerBell(detune, volume);
+          triggerBell(a, b, g, detune, volume);
         });
       };
 
