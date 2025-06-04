@@ -262,23 +262,10 @@
           updateGraph(betaChart.getContext('2d'), betaData, b);
           updateGraph(gammaChart.getContext('2d'), gammaData, g);
 
-          
           if (sampler && Math.abs(b) > 30) {
-            // Map alpha (-180 to 180) to detune in cents (-1200 to 1200)
-            const detune = Math.max(-1200, Math.min(1200, a * 6.66));
-            // Map gamma (-90 to 90) to volume 0 to 1
-            const volume = Math.max(0, Math.min(1, (Math.abs(g) / 90)));
-
-            log(`Triggering bell | Detune: ${detune.toFixed(1)} cents | Volume: ${volume.toFixed(2)}`);
-
-            sampler.triggerAttack("C4", undefined, volume);
-            sampler.get("C4").forEach(voice => {
-              if (voice && voice.playbackRate !== undefined) {
-                voice.detune = detune;
-              }
-            });
+            sampler.triggerAttack("C4");
+            log("Sampler triggered due to beta tilt: " + b.toFixed(2));
           }
-
         });
       };
 
