@@ -70,7 +70,7 @@
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
-    #enable-button {
+    #enable-button, #sound-select {
       margin-top: 1rem;
       padding: 1rem 2rem;
       font-size: 1rem;
@@ -80,8 +80,15 @@
       border-radius: 8px;
       cursor: pointer;
     }
-    #enable-button:hover {
-      background-color: #007aff;
+
+    select {
+      margin-top: 1rem;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      background: var(--box-bg);
+      color: var(--text-color);
+      border: 1px solid #666;
     }
 
     .toggle-label {
@@ -130,7 +137,6 @@
       transform: translateX(26px);
     }
 
-    /* Overlay Splash */
     #overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -144,12 +150,15 @@
       text-align: left;
       z-index: 999;
     }
+
     #overlay.active {
       display: flex;
     }
+
     #overlay-content {
       max-width: 600px;
     }
+
     #overlay-close {
       position: absolute;
       top: 1rem;
@@ -171,6 +180,10 @@
   <div class="byline">
     <a href="#" id="info-link">What the hell is this thing?</a>
   </div>
+
+  <select id="sound-select">
+    <option value="https://www.dropbox.com/scl/fi/zxydx1cw718q9qlzzsc4o/archeos-bell.wav?rlkey=shbjs89f380k4wmj9i0uanjo0&dl=1">Archeos Bell</option>
+  </select>
 
   <div class="canvas-container">
     <canvas id="alphaChart" width="300" height="100"></canvas>
@@ -203,97 +216,111 @@
   </div>
 
   <script>
+    let audioContext = null;
+    let audioBuffer = null;
+    let grainInterval = null;
+
     const alphaData = [], betaData = [], gammaData = [];
     const maxPoints = 100;
     let aMin = Infinity, aMax = -Infinity;
     let bMin = Infinity, bMax = -Infinity;
     let gMin = Infinity, gMax = -Infinity;
 
-    function updateGraph(ctx, dataArray, newVal, axis) {
+    const alphaChart = document.getElementById('alphaChart');
+    const betaChart = document.getElementById('betaChart');
+    const gammaChart = document.getElementById('gammaChart');
+
+    const updateGraph = (ctx, dataArray, newVal, axis) => {
       if (dataArray.length >= maxPoints) dataArray.shift();
       dataArray.push(newVal);
 
-      if (axis === 'a') {
-        aMin = Math.min(aMin, ...dataArray);
-        aMax = Math.max(aMax, ...dataArray);
-      } else if (axis === 'b') {
-        bMin = Math.min(bMin, ...dataArray);
-        bMax = Math.max(bMax, ...dataArray);
-      } else if (axis === 'g') {
-        gMin = Math.min(gMin, ...dataArray);
-        gMax = Math.max(gMax, ...dataArray);
-      }
-
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      ctx.beginPath();
+      if (axis === 'a') { aMin = Math.min(aMin, ...dataArray); aMax = Math.max(aMax, ...dataArray); }
+      if (axis === 'b') { bMin = Math.min(bMin, ...dataArray); bMax = Math.max(bMax, ...dataArray); }
+      if (axis === 'g') { gMin = Math.min(gMin, ...dataArray); gMax = Math.max(gMax, ...dataArray); }
 
       const min = axis === 'a' ? aMin : axis === 'b' ? bMin : gMin;
       const max = axis === 'a' ? aMax : axis === 'b' ? bMax : gMax;
       const range = max - min || 1;
+      const ctxCanvas = ctx.canvas;
 
+      ctx.clearRect(0, 0, ctxCanvas.width, ctxCanvas.height);
+      ctx.beginPath();
       dataArray.forEach((val, i) => {
-        const x = (i / maxPoints) * ctx.canvas.width;
-        const normalized = (val - min) / range;
-        const y = ctx.canvas.height * (1 - normalized);
+        const x = (i / maxPoints) * ctxCanvas.width;
+        const y = ctxCanvas.height * (1 - (val - min) / range);
         ctx.lineTo(x, y);
       });
       ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--accent');
       ctx.stroke();
-    }
+    };
 
-    document.getElementById('enable-button').addEventListener('click', () => {
+    const playGrain = (position = 0, playbackRate = 1.0, grainDuration = 0.1) => {
+      if (!audioBuffer || !audioContext) return;
+      const source = audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.playbackRate.value = playbackRate;
+
+      const gainNode = audioContext.createGain();
+      gainNode.gain.value = 0.2; // Default grain volume
+
+      source.connect(gainNode).connect(audioContext.destination);
+      source.start(audioContext.currentTime, position, grainDuration);
+    };
+
+    const startGranulation = () => {
+      grainInterval = setInterval(() => {
+        // Default behavior — will later be overridden by motion input
+        const duration = 0.1;
+        const position = Math.random() * (audioBuffer?.duration || 1);
+        playGrain(position, 1.0, duration);
+      }, 300);
+    };
+
+    const stopGranulation = () => clearInterval(grainInterval);
+
+    const loadAudioBuffer = async (url) => {
+      if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const res = await fetch(url);
+      const arrayBuffer = await res.arrayBuffer();
+      audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+    };
+
+    document.getElementById('enable-button').addEventListener('click', async () => {
+      const url = document.getElementById('sound-select').value;
+      await loadAudioBuffer(url);
+
       if (typeof DeviceMotionEvent.requestPermission === 'function') {
-        DeviceMotionEvent.requestPermission()
-          .then(response => {
-            if (response === 'granted') {
-              window.addEventListener('devicemotion', (event) => {
-                const rawA = event.rotationRate.alpha || 0;
-                const rawB = event.rotationRate.beta || 0;
-                const rawG = event.rotationRate.gamma || 0;
+        DeviceMotionEvent.requestPermission().then(response => {
+          if (response === 'granted') {
+            startGranulation();
+            window.addEventListener('devicemotion', (event) => {
+              const rawA = event.rotationRate.alpha || 0;
+              const rawB = event.rotationRate.beta || 0;
+              const rawG = event.rotationRate.gamma || 0;
 
-                const epsilon = 0.5; // degrees/sec threshold for stillness
-                const a = Math.abs(rawA) < epsilon ? 0 : rawA;
-                const b = Math.abs(rawB) < epsilon ? 0 : rawB;
-                const g = Math.abs(rawG) < epsilon ? 0 : rawG;
+              const epsilon = 0.5;
+              const a = Math.abs(rawA) < epsilon ? 0 : rawA;
+              const b = Math.abs(rawB) < epsilon ? 0 : rawB;
+              const g = Math.abs(rawG) < epsilon ? 0 : rawG;
 
-                document.getElementById('alphaLabel').textContent = `Alpha (Z): ${a.toFixed(2)}`;
-                document.getElementById('betaLabel').textContent = `Beta (X): ${b.toFixed(2)}`;
-                document.getElementById('gammaLabel').textContent = `Gamma (Y): ${g.toFixed(2)}`;
+              document.getElementById('alphaLabel').textContent = `Alpha (Z): ${a.toFixed(2)}`;
+              document.getElementById('betaLabel').textContent = `Beta (X): ${b.toFixed(2)}`;
+              document.getElementById('gammaLabel').textContent = `Gamma (Y): ${g.toFixed(2)}`;
 
-                updateGraph(alphaChart.getContext('2d'), alphaData, a, 'a');
-                updateGraph(betaChart.getContext('2d'), betaData, b, 'b');
-                updateGraph(gammaChart.getContext('2d'), gammaData, g, 'g');
-              });
-              document.getElementById('enable-button').style.display = 'none';
-            } else {
-              alert('Permission denied.');
-            }
-          })
-          .catch(err => {
-            console.error(err);
-            alert('Error requesting motion access.');
-          });
-      } else {
-        window.addEventListener('devicemotion', (event) => {
-          const rawA = event.rotationRate.alpha || 0;
-          const rawB = event.rotationRate.beta || 0;
-          const rawG = event.rotationRate.gamma || 0;
-
-          const epsilon = 0.5;
-          const a = Math.abs(rawA) < epsilon ? 0 : rawA;
-          const b = Math.abs(rawB) < epsilon ? 0 : rawB;
-          const g = Math.abs(rawG) < epsilon ? 0 : rawG;
-
-          document.getElementById('alphaLabel').textContent = `Alpha (Z): ${a.toFixed(2)}`;
-          document.getElementById('betaLabel').textContent = `Beta (X): ${b.toFixed(2)}`;
-          document.getElementById('gammaLabel').textContent = `Gamma (Y): ${g.toFixed(2)}`;
-
-          updateGraph(alphaChart.getContext('2d'), alphaData, a, 'a');
-          updateGraph(betaChart.getContext('2d'), betaData, b, 'b');
-          updateGraph(gammaChart.getContext('2d'), gammaData, g, 'g');
-        });
-        document.getElementById('enable-button').style.display = 'none';
+              updateGraph(alphaChart.getContext('2d'), alphaData, a, 'a');
+              updateGraph(betaChart.getContext('2d'), betaData, b, 'b');
+              updateGraph(gammaChart.getContext('2d'), gammaData, g, 'g');
+            });
+            document.getElementById('enable-button').style.display = 'none';
+          } else {
+            alert('Permission denied.');
+          }
+        }).catch(console.error);
       }
+    });
+
+    document.getElementById('sound-select').addEventListener('change', async (e) => {
+      await loadAudioBuffer(e.target.value);
     });
 
     document.getElementById('theme-toggle').addEventListener('change', (e) => {
