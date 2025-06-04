@@ -6,72 +6,53 @@
   <title>Bob & Jan's Bells</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
       background-color: #121212;
       color: #ffffff;
+      font-family: sans-serif;
+      text-align: center;
       margin: 0;
       padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
-
-    .title {
-      text-align: center;
-      margin: 20px;
+    h1 {
+      margin-top: 20px;
     }
-
     .byline {
-      font-size: 0.9em;
-      color: #bbb;
-      margin: 2px;
-    }
-
-    .byline a {
-      color: #bbb;
-      text-decoration: underline;
-    }
-
-    .container {
-      width: 90%;
-      max-width: 600px;
-      margin: 20px auto;
-    }
-
-    canvas {
-      width: 100%;
-      height: 100px;
-      background: #222;
-      margin-bottom: 10px;
-      border: 1px solid #444;
-    }
-
-    .label {
-      position: absolute;
       font-size: 0.8em;
-      color: #aaa;
-      padding: 4px;
+      margin-top: -5px;
     }
-
-    .graph-wrapper {
+    .byline a {
+      color: #cccccc;
+    }
+    .graph {
+      width: 90%;
+      max-width: 400px;
+      height: 100px;
+      background-color: #222;
+      margin: 20px auto;
       position: relative;
-      margin-bottom: 10px;
+      border: 1px solid #555;
     }
-
+    .value-label {
+      position: absolute;
+      bottom: 5px;
+      left: 5px;
+      font-size: 0.7em;
+      color: #aaa;
+    }
+    .toggle-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 10px;
+    }
     .switch {
       position: relative;
       display: inline-block;
-      width: 60px;
-      height: 34px;
+      width: 50px;
+      height: 24px;
       margin-left: 10px;
     }
-
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
+    .switch input {display:none;}
     .slider {
       position: absolute;
       cursor: pointer;
@@ -80,206 +61,178 @@
       right: 0;
       bottom: 0;
       background-color: #ccc;
-      transition: 0.4s;
-      border-radius: 34px;
+      transition: .4s;
+      border-radius: 24px;
     }
-
     .slider:before {
       position: absolute;
       content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
       background-color: white;
-      transition: 0.4s;
+      transition: .4s;
       border-radius: 50%;
     }
-
     input:checked + .slider {
-      background-color: #2196f3;
+      background-color: #2196F3;
     }
-
     input:checked + .slider:before {
       transform: translateX(26px);
     }
-
-    #splash {
-      position: fixed;
-      top: 0;
-      left: 0;
+    canvas {
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      color: #fff;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-      z-index: 999;
     }
-
-    #closeSplash {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 2em;
-      cursor: pointer;
-    }
-
-    .controls {
-      text-align: center;
-      margin-top: 10px;
+    #debugLog {
+      margin: 20px;
+      font-size: 0.8em;
+      color: #ccc;
+      white-space: pre-line;
+      text-align: left;
     }
   </style>
 </head>
 <body>
-  <div class="title">
-    <h1>Bob & Jan's Bells</h1>
-    <div class="byline">
-      <a href="https://louisgoldford.com" target="_blank">Love, Louis and Eszter</a>
-    </div>
-    <div class="byline">
-      <a href="#" onclick="document.getElementById('splash').style.display='flex'">What the hell is this thing?</a>
-    </div>
+  <h1>Bob & Jan's Bells</h1>
+  <div class="byline">
+    <a href="https://louisgoldford.com" target="_blank">Love, Louis and Eszter</a><br />
+    <a href="#" onclick="showSplash()">What the hell is this thing?</a>
   </div>
-  <div id="splash">
-    <div id="closeSplash" onclick="document.getElementById('splash').style.display='none'">&times;</div>
-    <p>This is a placeholder explanation. Replace me with an actual description of what this does.</p>
+
+  <div class="toggle-container">
+    <label for="darkModeToggle">Dark Mode</label>
+    <label class="switch">
+      <input type="checkbox" id="darkModeToggle" checked>
+      <span class="slider"></span>
+    </label>
   </div>
-  <div class="container">
-    <div class="graph-wrapper">
-      <canvas id="graphX"></canvas>
-      <div class="label" id="labelX" style="bottom: 10px; left: 10px;">X: 0</div>
-    </div>
-    <div class="graph-wrapper">
-      <canvas id="graphY"></canvas>
-      <div class="label" id="labelY" style="bottom: 10px; left: 10px;">Y: 0</div>
-    </div>
-    <div class="graph-wrapper">
-      <canvas id="graphZ"></canvas>
-      <div class="label" id="labelZ" style="bottom: 10px; left: 10px;">Z: 0</div>
-    </div>
-    <div class="controls">
-      <label for="darkModeToggle">Dark Mode</label>
-      <label class="switch">
-        <input type="checkbox" id="darkModeToggle" checked>
-        <span class="slider"></span>
-      </label>
-    </div>
-    <div class="controls">
-      <select id="sampleSelector">
-        <option value="https://www.dropbox.com/scl/fi/zxydx1cw718q9qlzzsc4o/archeos-bell.wav?rlkey=shbjs89f380k4wmj9i0uanjo0&dl=1">archeos-bell.wav</option>
-      </select>
-    </div>
-    <div class="controls">
-      <button onclick="initAudioAndGyro()">Enable Gyro</button>
-    </div>
+
+  <div class="graph" id="graphX">
+    <canvas id="canvasX"></canvas>
+    <div class="value-label" id="labelX">X: 0</div>
   </div>
+  <div class="graph" id="graphY">
+    <canvas id="canvasY"></canvas>
+    <div class="value-label" id="labelY">Y: 0</div>
+  </div>
+  <div class="graph" id="graphZ">
+    <canvas id="canvasZ"></canvas>
+    <div class="value-label" id="labelZ">Z: 0</div>
+  </div>
+
+  <button id="enableButton">Enable Gyro</button>
+  <select id="soundSelect">
+    <option value="https://www.dropbox.com/scl/fi/zxydx1cw718q9qlzzsc4o/archeos-bell.wav?rlkey=shbjs89f380k4wmj9i0uanjo0&st=892d95ca&dl=1">archeos-bell.wav</option>
+  </select>
+
+  <div id="debugLog"></div>
 
   <script>
-    const BUFFER_SIZE = 128;
-    const graphLength = 200;
-    const epsilon = 0.5;
+    const debugLog = document.getElementById("debugLog");
+    function logDebug(msg) {
+      debugLog.textContent += msg + "\n";
+    }
 
-    let xData = [], yData = [], zData = [];
-    let audioCtx;
-    let sourceBuffer;
-    let isPlaying = false;
-    let grainInterval;
+    const canvasX = document.getElementById("canvasX");
+    const canvasY = document.getElementById("canvasY");
+    const canvasZ = document.getElementById("canvasZ");
+    const ctxX = canvasX.getContext("2d");
+    const ctxY = canvasY.getContext("2d");
+    const ctxZ = canvasZ.getContext("2d");
+    canvasX.width = canvasY.width = canvasZ.width = 400;
+    canvasX.height = canvasY.height = canvasZ.height = 100;
 
-    const graphX = document.getElementById("graphX");
-    const graphY = document.getElementById("graphY");
-    const graphZ = document.getElementById("graphZ");
-    const ctxX = graphX.getContext("2d");
-    const ctxY = graphY.getContext("2d");
-    const ctxZ = graphZ.getContext("2d");
-    const labelX = document.getElementById("labelX");
-    const labelY = document.getElementById("labelY");
-    const labelZ = document.getElementById("labelZ");
+    const buffers = { X: [], Y: [], Z: [] };
+    const maxBufferLength = 200;
 
-    function drawGraph(ctx, data, color) {
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      const w = ctx.canvas.width;
-      const h = ctx.canvas.height;
-      const max = Math.max(...data, 1);
-      const min = Math.min(...data, -1);
+    function drawGraph(ctx, buffer, label, labelElem) {
+      ctx.clearRect(0, 0, canvasX.width, canvasX.height);
       ctx.beginPath();
-      ctx.strokeStyle = color;
-      data.forEach((v, i) => {
-        const x = (i / graphLength) * w;
-        const y = h - ((v - min) / (max - min)) * h;
+      for (let i = 0; i < buffer.length; i++) {
+        const x = (i / maxBufferLength) * canvasX.width;
+        const y = canvasX.height / 2 - buffer[i] * 30;
         ctx.lineTo(x, y);
-      });
+      }
+      ctx.strokeStyle = "#0f0";
       ctx.stroke();
+      labelElem.textContent = `${label}: ${buffer.at(-1)?.toFixed(2) || 0}`;
     }
 
-    function updateGraphs(x, y, z) {
-      xData.push(x); if (xData.length > graphLength) xData.shift();
-      yData.push(y); if (yData.length > graphLength) yData.shift();
-      zData.push(z); if (zData.length > graphLength) zData.shift();
-      drawGraph(ctxX, xData, "red");
-      drawGraph(ctxY, yData, "green");
-      drawGraph(ctxZ, zData, "blue");
-      labelX.innerText = `X: ${x.toFixed(2)}`;
-      labelY.innerText = `Y: ${y.toFixed(2)}`;
-      labelZ.innerText = `Z: ${z.toFixed(2)}`;
-    }
-
-    function loadSample(url) {
-      return fetch(url)
-        .then(r => r.arrayBuffer())
-        .then(ab => audioCtx.decodeAudioData(ab));
-    }
-
-    function playGrain(buffer, position, duration = 0.1, playbackRate = 1.0) {
-      const src = audioCtx.createBufferSource();
-      src.buffer = buffer;
-      src.playbackRate.value = playbackRate;
-      const gain = audioCtx.createGain();
-      gain.gain.value = 0.05; // low gain
-      src.connect(gain).connect(audioCtx.destination);
-      src.start(audioCtx.currentTime, position, duration);
-    }
-
-    function startGranularEngine() {
-      if (!sourceBuffer) return;
-      grainInterval = setInterval(() => {
-        if (Math.abs(lastX) < epsilon && Math.abs(lastY) < epsilon && Math.abs(lastZ) < epsilon) return;
-        const fileDuration = sourceBuffer.duration;
-        const position = (Math.abs(lastZ) % 1) * fileDuration;
-        const duration = 0.05 + Math.abs(lastX) * 0.02;
-        const pitch = 0.5 + Math.abs(lastY) * 0.1;
-        playGrain(sourceBuffer, position, duration, pitch);
-      }, 100);
-    }
-
-    let lastX = 0, lastY = 0, lastZ = 0;
-
-    function initAudioAndGyro() {
-      if (isPlaying) return;
-      isPlaying = true;
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const sampleURL = document.getElementById("sampleSelector").value;
-      loadSample(sampleURL).then(buf => {
-        sourceBuffer = buf;
-        startGranularEngine();
-      });
-      window.addEventListener("devicemotion", e => {
-        const r = e.rotationRate;
-        if (!r) return;
-        lastX = r.beta || 0;
-        lastY = r.gamma || 0;
-        lastZ = r.alpha || 0;
-        updateGraphs(lastX, lastY, lastZ);
-      });
-    }
-
-    document.getElementById("darkModeToggle").addEventListener("change", function () {
-      document.body.style.backgroundColor = this.checked ? "#121212" : "#ffffff";
-      document.body.style.color = this.checked ? "#ffffff" : "#000000";
+    const darkToggle = document.getElementById("darkModeToggle");
+    darkToggle.addEventListener("change", () => {
+      document.body.style.backgroundColor = darkToggle.checked ? "#121212" : "#ffffff";
+      document.body.style.color = darkToggle.checked ? "#ffffff" : "#000000";
     });
+
+    let audioCtx, sourceBuffer, granularNode;
+    let lastGrainTime = 0;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        logDebug("AudioContext initialized.");
+      }
+    }
+
+    async function loadSound(url) {
+      logDebug("Loading sound...");
+      const response = await fetch(url);
+      const arrayBuffer = await response.arrayBuffer();
+      sourceBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+      logDebug("Sound decoded.");
+    }
+
+    function playGrain(position, duration, playbackRate) {
+      if (!sourceBuffer) return;
+      const now = audioCtx.currentTime;
+      if (now - lastGrainTime < 0.1) return;
+      lastGrainTime = now;
+      const src = audioCtx.createBufferSource();
+      const gain = audioCtx.createGain();
+      src.buffer = sourceBuffer;
+      src.playbackRate.value = playbackRate;
+      const grainStart = Math.max(0, position);
+      src.connect(gain).connect(audioCtx.destination);
+      src.start(now, grainStart, duration);
+      src.stop(now + duration);
+    }
+
+    document.getElementById("enableButton").addEventListener("click", async () => {
+      initAudio();
+      await audioCtx.resume();
+      logDebug("AudioContext resumed.");
+      await loadSound(document.getElementById("soundSelect").value);
+
+      window.addEventListener("devicemotion", (event) => {
+        const x = event.rotationRate.alpha || 0;
+        const y = event.rotationRate.beta || 0;
+        const z = event.rotationRate.gamma || 0;
+        buffers.X.push(x);
+        buffers.Y.push(y);
+        buffers.Z.push(z);
+        if (buffers.X.length > maxBufferLength) buffers.X.shift();
+        if (buffers.Y.length > maxBufferLength) buffers.Y.shift();
+        if (buffers.Z.length > maxBufferLength) buffers.Z.shift();
+        drawGraph(ctxX, buffers.X, "Alpha (Z)", document.getElementById("labelX"));
+        drawGraph(ctxY, buffers.Y, "Beta (X)", document.getElementById("labelY"));
+        drawGraph(ctxZ, buffers.Z, "Gamma (Y)", document.getElementById("labelZ"));
+
+        const movement = Math.abs(x) + Math.abs(y) + Math.abs(z);
+        if (movement > 5 && sourceBuffer) {
+          const pos = (Math.abs(y) % 1) * sourceBuffer.duration;
+          const dur = 0.1 + Math.abs(z) * 0.02;
+          const rate = 0.8 + Math.abs(x) * 0.01;
+          playGrain(pos, dur, rate);
+          logDebug(`Grain @ ${pos.toFixed(2)}s dur ${dur.toFixed(2)} rate ${rate.toFixed(2)}`);
+        }
+      });
+    });
+
+    function showSplash() {
+      alert("This will explain what the hell this thing is doing. (Placeholder)");
+    }
   </script>
 </body>
 </html>
