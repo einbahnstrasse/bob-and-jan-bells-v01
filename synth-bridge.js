@@ -57,3 +57,24 @@ document.addEventListener("DOMContentLoaded", () => {
   // Optional inline load confirmation
   log("synth-bridge.js loaded successfully.");
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const infoLink = document.getElementById("info-link");
+  const overlay = document.getElementById("overlay");
+  const overlayClose = document.getElementById("overlay-close");
+
+  if (infoLink && overlay && overlayClose) {
+    infoLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      overlay.classList.add("active");
+      logDebug("Splash screen opened.");
+    });
+
+    overlayClose.addEventListener("click", () => {
+      overlay.classList.remove("active");
+      logDebug("Splash screen closed.");
+    });
+  } else {
+    console.warn("Splash screen elements not found.");
+  }
+});

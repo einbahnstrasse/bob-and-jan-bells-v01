@@ -160,13 +160,33 @@
       cursor: pointer;
     }
   </style>
-<!-- Load Tone.js first, without defer -->
-<script src="https://cdn.jsdelivr.net/npm/tone@latest"></script>
+  <script>
+  // Load Tone.js first, then load all other scripts when ready
+  const toneScript = document.createElement('script');
+  toneScript.src = "https://cdn.jsdelivr.net/npm/tone@latest";
+  toneScript.onload = () => {
+    console.log("Tone.js loaded successfully.");
 
-<!-- Then load your own scripts, using defer -->
-<script defer src="synth-engine.js"></script>
-<script defer src="gyro-graph.js"></script>
-<script defer src="synth-bridge.js"></script>
+    const scriptsToLoad = [
+      'synth-engine.js',
+      'gyro-graph.js',
+      'synth-bridge.js'
+    ];
+
+    scriptsToLoad.forEach(src => {
+      const s = document.createElement('script');
+      s.src = src;
+      s.defer = true;
+      document.head.appendChild(s);
+    });
+  };
+  toneScript.onerror = () => {
+    console.error("Failed to load Tone.js");
+  };
+
+  document.head.appendChild(toneScript);
+</script>
+
   <script>
     log("Inline script ran after loading all external scripts.");
   </script>
