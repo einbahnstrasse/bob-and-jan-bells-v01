@@ -328,18 +328,7 @@ const noteMap = [
   "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"
 ];
 
-document.getElementById('volume-slider').addEventListener('input', (e) => {
-  const val = parseFloat(e.target.value);
-  gainNode.gain.value = val;
-  log(`Master volume set to: ${val.toFixed(2)}`);
-});
-
 </script>
-
-  <div style="margin-top: 1rem;">
-    <label for="volume-slider">Volume</label><br>
-    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1" style="width: 90%;">
-  </div>
 
   <div id="debug-log" style="
       width: 90%;
