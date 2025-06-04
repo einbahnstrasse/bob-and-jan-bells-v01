@@ -160,10 +160,13 @@
       cursor: pointer;
     }
   </style>
-  <script defer src="https://cdn.jsdelivr.net/npm/tone@latest"></script>
-  <script defer src="synth-engine.js"></script>
-  <script defer src="gyro-graph.js"></script>
-  <script defer src="synth-bridge.js"></script>
+<!-- Load Tone.js first, without defer -->
+<script src="https://cdn.jsdelivr.net/npm/tone@latest"></script>
+
+<!-- Then load your own scripts, using defer -->
+<script defer src="synth-engine.js"></script>
+<script defer src="gyro-graph.js"></script>
+<script defer src="synth-bridge.js"></script>
   <script>
     log("Inline script ran after loading all external scripts.");
   </script>
