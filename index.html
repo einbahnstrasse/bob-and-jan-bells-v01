@@ -204,25 +204,7 @@
   </div>
 
   <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      log("Tone defined in inline script?", typeof Tone !== 'undefined');
-    // let sampler;
-    // const gainNode = new Tone.Gain().toDestination();
-    let sampler;
-    let gainNode;  // declared here
-
-    // async function setupSampler() {
-    //   await Tone.start();
-    //   log("Tone.js started");
-
-    //   gainNode = new Tone.Gain(1).toDestination();  // properly initialized after Tone.start()
-
-    //   sampler = new Tone.Sampler({
-    //     urls: { C4: "./media/archeos-bell.wav" },
-    //     onload: () => log("Sampler loaded."),
-    //   }).connect(gainNode);
-    // }
-
+  window.addEventListener('DOMContentLoaded', () => {
     function log(message) {
       const logDiv = document.getElementById("debug-log");
       if (logDiv) {
@@ -232,6 +214,38 @@
         logDiv.scrollTop = logDiv.scrollHeight;
       }
     }
+
+    log("Tone defined in inline script? " + (typeof Tone !== 'undefined'));
+    // let sampler;
+    // const gainNode = new Tone.Gain().toDestination();
+    let sampler;
+    let gainNode;  // declared here
+
+    // async function setupSampler() {
+    //   await Tone.start();
+    //   log("Tone.js started");
+
+      // gainNode = new Tone.Gain(1).toDestination();  // properly initialized after Tone.start()
+
+      // sampler = new Tone.Sampler({
+      //   urls: { C4: "./media/archeos-bell.wav" },
+      //   onload: () => log("Sampler loaded."),
+      // }).connect(gainNode);
+    // }
+
+    const alphaChart = document.getElementById("alphaChart");
+    const betaChart = document.getElementById("betaChart");
+    const gammaChart = document.getElementById("gammaChart");
+
+    // function log(message) {
+    //   const logDiv = document.getElementById("debug-log");
+    //   if (logDiv) {
+    //     const entry = document.createElement("div");
+    //     entry.textContent = message;
+    //     logDiv.appendChild(entry);
+    //     logDiv.scrollTop = logDiv.scrollHeight;
+    //   }
+    // }
 
     const alphaData = [], betaData = [], gammaData = [];
     const maxPoints = 100;
@@ -261,10 +275,23 @@
       await Tone.start();
       log("Tone.js started");
 
+      gainNode = new Tone.Gain(1).toDestination();
+
       sampler = new Tone.Sampler({
         urls: { C4: "./media/archeos-bell.wav" },
         onload: () => log("Sampler loaded."),
       }).connect(gainNode);
+
+      const volumeSlider = document.getElementById('volume-slider');
+      if (volumeSlider) {
+        volumeSlider.addEventListener('input', (e) => {
+          const val = parseFloat(e.target.value);
+          gainNode.gain.value = val;
+          log(`Master volume set to: ${val.toFixed(2)}`);
+        });
+      } else {
+        log("⚠️ Volume slider not found in DOM.");
+      }
     }
 
 function triggerBell(a, b, g, detune = 0, volume = 0) {
@@ -354,22 +381,17 @@ const noteMap = [
   "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"
 ];
 
-// document.getElementById('volume-slider').addEventListener('input', (e) => {
-//   const val = parseFloat(e.target.value);
-//   gainNode.gain.value = val;
-//   log(`Master volume set to: ${val.toFixed(2)}`);
-// });
+// const volumeSlider = document.getElementById('volume-slider');
+// if (volumeSlider) {
+//   volumeSlider.addEventListener('input', (e) => {
+//     const val = parseFloat(e.target.value);
+//     gainNode.gain.value = val;
+//     log(`Master volume set to: ${val.toFixed(2)}`);
+//   });
+// } else {
+//   log("⚠️ Volume slider not found in DOM.");
+// }
 
-  const volumeSlider = document.getElementById('volume-slider');
-  if (volumeSlider) {
-    volumeSlider.addEventListener('input', (e) => {
-      const val = parseFloat(e.target.value);
-      gainNode.gain.value = val;
-      log(`Master volume set to: ${val.toFixed(2)}`);
-    });
-  } else {
-    log("⚠️ Volume slider not found in DOM.");
-  }
 });
 </script>
 
