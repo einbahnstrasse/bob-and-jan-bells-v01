@@ -234,7 +234,8 @@
       log("Tone.js started successfully.");
       log("Tone.js started");
       sampler = new Tone.Sampler({
-        "C4": "./media/archeos-bell.wav"
+        // "C4": "./media/archeos-bell.wav",
+        "C4": "./media/WinchesterBell.wav"
       }, {
         onload: () => {
           log("Sampler loaded.");
@@ -252,7 +253,7 @@
           const b = event.rotationRate.beta || 0;
           const g = event.rotationRate.gamma || 0;
 
-          log(`Gyro updated: alpha=${a.toFixed(2)}, beta=${b.toFixed(2)}, gamma=${g.toFixed(2)}`);
+          // log(`Gyro updated: alpha=${a.toFixed(2)}, beta=${b.toFixed(2)}, gamma=${g.toFixed(2)}`);
           document.getElementById('alphaLabel').textContent = `Alpha (Z): ${a.toFixed(2)}`;
           document.getElementById('betaLabel').textContent = `Beta (X): ${b.toFixed(2)}`;
           document.getElementById('gammaLabel').textContent = `Gamma (Y): ${g.toFixed(2)}`;
