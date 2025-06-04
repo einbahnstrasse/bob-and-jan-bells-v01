@@ -11,7 +11,7 @@ export async function initSynth() {
   console.log('[SynthEngine] Tone.js started');
 
   player = new Tone.Player({
-    url: './media/arceus-bell.wav',
+    url: './media/archeos-bell.wav',
     autostart: false,
     onload: () => console.log('[SynthEngine] Audio loaded successfully'),
   }).toDestination();
