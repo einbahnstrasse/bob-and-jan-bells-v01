@@ -345,5 +345,13 @@ const noteMap = [
     <strong>Debug Console:</strong>
   </div>
 
+  <script>
+    log("Tone defined in inline script?", typeof Tone !== 'undefined');  // <- should log "true"
+    
+    // everything from log(), playSound(), gyro listener, theme toggle, etc.
+    // including sampler creation and Tone.Sampler triggerAttack calls
+    
+  </script>
+
 </body>
 </html>
