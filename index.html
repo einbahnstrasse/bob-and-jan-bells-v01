@@ -10,11 +10,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       height: 100vh;
       margin: 0;
       background: #f0f0f0;
       text-align: center;
+      padding: 1em;
     }
     h1 {
       margin-bottom: 1rem;
@@ -42,6 +43,12 @@
     #enable-button:hover {
       background-color: #005fcc;
     }
+    canvas {
+      margin-top: 1rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
   </style>
 </head>
 <body>
@@ -52,16 +59,56 @@
   <div class="data-box" id="gamma">Gamma (Y): <span>0</span></div>
   <button id="enable-button">Enable Gyro</button>
 
+  <canvas id="alphaChart" width="300" height="100"></canvas>
+  <canvas id="betaChart" width="300" height="100"></canvas>
+  <canvas id="gammaChart" width="300" height="100"></canvas>
+
   <script>
+    const alphaData = [];
+    const betaData = [];
+    const gammaData = [];
+    const maxPoints = 100;
+
+    const alphaCanvas = document.getElementById('alphaChart');
+    const betaCanvas = document.getElementById('betaChart');
+    const gammaCanvas = document.getElementById('gammaChart');
+
+    const alphaCtx = alphaCanvas.getContext('2d');
+    const betaCtx = betaCanvas.getContext('2d');
+    const gammaCtx = gammaCanvas.getContext('2d');
+
     function updateGyroDisplay(event) {
-      document.querySelector('#alpha span').textContent = event.alpha?.toFixed(2) ?? 'N/A';
-      document.querySelector('#beta span').textContent = event.beta?.toFixed(2) ?? 'N/A';
-      document.querySelector('#gamma span').textContent = event.gamma?.toFixed(2) ?? 'N/A';
+      const a = event.alpha ?? 0;
+      const b = event.beta ?? 0;
+      const g = event.gamma ?? 0;
+
+      document.querySelector('#alpha span').textContent = a.toFixed(2);
+      document.querySelector('#beta span').textContent = b.toFixed(2);
+      document.querySelector('#gamma span').textContent = g.toFixed(2);
+
+      updateGraph(alphaCtx, alphaData, a);
+      updateGraph(betaCtx, betaData, b);
+      updateGraph(gammaCtx, gammaData, g);
+    }
+
+    function updateGraph(ctx, dataArray, newVal) {
+      if (dataArray.length >= maxPoints) dataArray.shift();
+      dataArray.push(newVal);
+
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.beginPath();
+      ctx.moveTo(0, ctx.canvas.height / 2);
+      dataArray.forEach((val, i) => {
+        const x = (i / maxPoints) * ctx.canvas.width;
+        const y = ctx.canvas.height / 2 - val;
+        ctx.lineTo(x, y);
+      });
+      ctx.strokeStyle = '#007aff';
+      ctx.stroke();
     }
 
     document.getElementById('enable-button').addEventListener('click', () => {
       if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-        // iOS 13+ requires permission
         DeviceOrientationEvent.requestPermission()
           .then(response => {
             if (response === 'granted') {
@@ -76,7 +123,6 @@
             alert('Error requesting gyroscope access.');
           });
       } else {
-        // Android or other browsers
         window.addEventListener('deviceorientation', updateGyroDisplay);
         document.getElementById('enable-button').style.display = 'none';
       }
