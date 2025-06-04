@@ -209,36 +209,6 @@
     let bMin = Infinity, bMax = -Infinity;
     let gMin = Infinity, gMax = -Infinity;
 
-    let alphaOffset = null, betaOffset = null, gammaOffset = null;
-
-    const alphaCanvas = document.getElementById('alphaChart');
-    const betaCanvas = document.getElementById('betaChart');
-    const gammaCanvas = document.getElementById('gammaChart');
-
-    const alphaCtx = alphaCanvas.getContext('2d');
-    const betaCtx = betaCanvas.getContext('2d');
-    const gammaCtx = gammaCanvas.getContext('2d');
-
-    function updateGyroDisplay(event) {
-      if (alphaOffset === null) {
-        alphaOffset = event.alpha ?? 0;
-        betaOffset = event.beta ?? 0;
-        gammaOffset = event.gamma ?? 0;
-      }
-
-      const a = (event.alpha ?? 0) - alphaOffset;
-      const b = (event.beta ?? 0) - betaOffset;
-      const g = (event.gamma ?? 0) - gammaOffset;
-
-      document.getElementById('alphaLabel').textContent = `Alpha (Z): ${a.toFixed(2)}`;
-      document.getElementById('betaLabel').textContent = `Beta (X): ${b.toFixed(2)}`;
-      document.getElementById('gammaLabel').textContent = `Gamma (Y): ${g.toFixed(2)}`;
-
-      updateGraph(alphaCtx, alphaData, a, 'a');
-      updateGraph(betaCtx, betaData, b, 'b');
-      updateGraph(gammaCtx, gammaData, g, 'g');
-    }
-
     function updateGraph(ctx, dataArray, newVal, axis) {
       if (dataArray.length >= maxPoints) dataArray.shift();
       dataArray.push(newVal);
@@ -272,11 +242,28 @@
     }
 
     document.getElementById('enable-button').addEventListener('click', () => {
-      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-        DeviceOrientationEvent.requestPermission()
+      if (typeof DeviceMotionEvent.requestPermission === 'function') {
+        DeviceMotionEvent.requestPermission()
           .then(response => {
             if (response === 'granted') {
-              window.addEventListener('deviceorientation', updateGyroDisplay);
+              window.addEventListener('devicemotion', (event) => {
+                const rawA = event.rotationRate.alpha || 0;
+                const rawB = event.rotationRate.beta || 0;
+                const rawG = event.rotationRate.gamma || 0;
+
+                const epsilon = 0.5; // degrees/sec threshold for stillness
+                const a = Math.abs(rawA) < epsilon ? 0 : rawA;
+                const b = Math.abs(rawB) < epsilon ? 0 : rawB;
+                const g = Math.abs(rawG) < epsilon ? 0 : rawG;
+
+                document.getElementById('alphaLabel').textContent = `Alpha (Z): ${a.toFixed(2)}`;
+                document.getElementById('betaLabel').textContent = `Beta (X): ${b.toFixed(2)}`;
+                document.getElementById('gammaLabel').textContent = `Gamma (Y): ${g.toFixed(2)}`;
+
+                updateGraph(alphaChart.getContext('2d'), alphaData, a, 'a');
+                updateGraph(betaChart.getContext('2d'), betaData, b, 'b');
+                updateGraph(gammaChart.getContext('2d'), gammaData, g, 'g');
+              });
               document.getElementById('enable-button').style.display = 'none';
             } else {
               alert('Permission denied.');
@@ -284,10 +271,27 @@
           })
           .catch(err => {
             console.error(err);
-            alert('Error requesting gyroscope access.');
+            alert('Error requesting motion access.');
           });
       } else {
-        window.addEventListener('deviceorientation', updateGyroDisplay);
+        window.addEventListener('devicemotion', (event) => {
+          const rawA = event.rotationRate.alpha || 0;
+          const rawB = event.rotationRate.beta || 0;
+          const rawG = event.rotationRate.gamma || 0;
+
+          const epsilon = 0.5;
+          const a = Math.abs(rawA) < epsilon ? 0 : rawA;
+          const b = Math.abs(rawB) < epsilon ? 0 : rawB;
+          const g = Math.abs(rawG) < epsilon ? 0 : rawG;
+
+          document.getElementById('alphaLabel').textContent = `Alpha (Z): ${a.toFixed(2)}`;
+          document.getElementById('betaLabel').textContent = `Beta (X): ${b.toFixed(2)}`;
+          document.getElementById('gammaLabel').textContent = `Gamma (Y): ${g.toFixed(2)}`;
+
+          updateGraph(alphaChart.getContext('2d'), alphaData, a, 'a');
+          updateGraph(betaChart.getContext('2d'), betaData, b, 'b');
+          updateGraph(gammaChart.getContext('2d'), gammaData, g, 'g');
+        });
         document.getElementById('enable-button').style.display = 'none';
       }
     });
