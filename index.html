@@ -199,8 +199,22 @@
   </div>
 
   <script>
+    // let sampler;
+    // const gainNode = new Tone.Gain().toDestination();
     let sampler;
-    const gainNode = new Tone.Gain().toDestination();
+    let gainNode;  // declared here
+
+    async function setupSampler() {
+      await Tone.start();
+      log("Tone.js started");
+
+      gainNode = new Tone.Gain(1).toDestination();  // properly initialized after Tone.start()
+
+      sampler = new Tone.Sampler({
+        urls: { C4: "./media/archeos-bell.wav" },
+        onload: () => log("Sampler loaded."),
+      }).connect(gainNode);
+    }
 
     function log(message) {
       const logDiv = document.getElementById("debug-log");
