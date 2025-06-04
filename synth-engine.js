@@ -1,38 +1,36 @@
-// --- synth-engine.js ---
-// Handles granular synthesis using Tone.js
+export default class SynthEngine {
+  constructor(audioURL, log) {
+    this.log = log || console.log;
+    this.log("Initializing SynthEngine...");
+    this.audioURL = audioURL;
 
-let player, grainPlayer;
+    this.player = new Tone.GrainPlayer({
+      url: audioURL,
+      loop: true,
+      grainSize: 0.2,
+      overlap: 0.1,
+      playbackRate: 1
+    }).toDestination();
 
-async function initSynth(url) {
-  await Tone.start();
-  player = new Tone.Player(url);
-  await player.load();
+    this.player.on('load', () => {
+      this.log("Audio file loaded.");
+      this.player.start();
+    });
 
-  grainPlayer = new Tone.GrainPlayer({
-    url: url,
-    grainSize: 0.2,
-    overlap: 0.1,
-    loop: true
-  }).toDestination();
-  grainPlayer.sync().start(0);
-}
+    this.movementThreshold = 5;
+  }
 
-function updateSynthParams({ alpha, beta, gamma }) {
-  if (!grainPlayer) return;
-  
-  // Map gyro data to parameters
-  const absMotion = Math.abs(alpha) + Math.abs(beta) + Math.abs(gamma);
+  processGyroData(alpha, beta, gamma) {
+    const motionMagnitude = Math.sqrt(alpha ** 2 + beta ** 2 + gamma ** 2);
+    if (motionMagnitude < this.movementThreshold) {
+      this.player.volume.value = -80; // mute when still
+      return;
+    }
 
-  // Silence on stillness
-  grainPlayer.volume.value = Tone.gainToDb(Math.min(absMotion / 60, 1) * 0.5);
+    this.player.volume.value = -10 + (Math.min(motionMagnitude, 90) / 90) * 10; // fade in with movement
+    this.player.grainSize = 0.05 + (Math.abs(beta) % 30) / 300; // e.g., control with beta
+    this.player.playbackRate = 0.5 + (Math.abs(gamma) % 90) / 180; // gamma controls transposition
 
-  // Map beta to grain size
-  grainPlayer.grainSize = 0.01 + (Math.abs(beta) / 180) * 0.5;
-
-  // Map alpha to playback rate
-  grainPlayer.playbackRate = 0.5 + (alpha + 360) % 360 / 720;
-
-  // Map gamma to position
-  const pos = ((gamma + 90) / 180) * player.buffer.duration;
-  grainPlayer.set({ position: pos });
+    this.log(`Motion: α=${alpha.toFixed(1)} β=${beta.toFixed(1)} γ=${gamma.toFixed(1)} | GrainSize=${this.player.grainSize.toFixed(3)} PlaybackRate=${this.player.playbackRate.toFixed(2)}`);
+  }
 }
