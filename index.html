@@ -6,12 +6,6 @@
   <title>Gyro Test</title>
   <style>
     :root {
-      --bg-color: #f0f0f0;
-      --text-color: #000;
-      --box-bg: white;
-      --accent: #007aff;
-    }
-    body.dark {
       --bg-color: #121212;
       --text-color: #fff;
       --box-bg: #1e1e1e;
@@ -32,20 +26,34 @@
       padding: 1em;
       transition: background 0.3s, color 0.3s;
     }
+
     h1 {
       margin-bottom: 1rem;
     }
-    .data-box {
-      font-size: 1.25rem;
-      margin: 0.5rem;
-      padding: 1rem 2rem;
+
+    .canvas-container {
+      position: relative;
+      margin-top: 1rem;
+    }
+
+    .gyro-label {
+      position: absolute;
+      bottom: 8px;
+      left: 10px;
+      font-size: 0.9rem;
+      color: var(--text-color);
+      background: rgba(0, 0, 0, 0.4);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    canvas {
       background: var(--box-bg);
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      width: 80%;
-      max-width: 300px;
     }
-    #enable-button, #theme-toggle {
+
+    #enable-button {
       margin-top: 1rem;
       padding: 1rem 2rem;
       font-size: 1rem;
@@ -55,36 +63,81 @@
       border-radius: 8px;
       cursor: pointer;
     }
-    #enable-button:hover, #theme-toggle:hover {
-      background-color: #005fcc;
+    #enable-button:hover {
+      background-color: #007aff;
     }
-    canvas {
+
+    /* Toggle Switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
       margin-top: 1rem;
-      background: var(--box-bg);
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .switch input { display: none; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--accent);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
     }
   </style>
 </head>
-<body>
+<body class="dark">
 
-  <h1>Gyroscope Data</h1>
-  <div class="data-box" id="alpha">Alpha (Z): <span>0</span></div>
-  <div class="data-box" id="beta">Beta (X): <span>0</span></div>
-  <div class="data-box" id="gamma">Gamma (Y): <span>0</span></div>
+  <h1>Bob & Jan's Bells</h1>
+
+  <div class="canvas-container">
+    <canvas id="alphaChart" width="300" height="100"></canvas>
+    <div class="gyro-label" id="alphaLabel">Alpha (Z): 0.00</div>
+  </div>
+  <div class="canvas-container">
+    <canvas id="betaChart" width="300" height="100"></canvas>
+    <div class="gyro-label" id="betaLabel">Beta (X): 0.00</div>
+  </div>
+  <div class="canvas-container">
+    <canvas id="gammaChart" width="300" height="100"></canvas>
+    <div class="gyro-label" id="gammaLabel">Gamma (Y): 0.00</div>
+  </div>
+
   <button id="enable-button">Enable Gyro</button>
-  <button id="theme-toggle">Toggle Dark Mode</button>
 
-  <canvas id="alphaChart" width="300" height="100"></canvas>
-  <canvas id="betaChart" width="300" height="100"></canvas>
-  <canvas id="gammaChart" width="300" height="100"></canvas>
+  <label class="switch">
+    <input type="checkbox" id="theme-toggle" checked>
+    <span class="slider"></span>
+  </label>
 
   <script>
     const alphaData = [];
     const betaData = [];
     const gammaData = [];
     const maxPoints = 100;
-    const yRange = 180; // normalize from -90 to 90, or full 360
+    const yRange = 180; // normalize from -90 to 90
 
     const alphaCanvas = document.getElementById('alphaChart');
     const betaCanvas = document.getElementById('betaChart');
@@ -99,9 +152,9 @@
       const b = event.beta ?? 0;
       const g = event.gamma ?? 0;
 
-      document.querySelector('#alpha span').textContent = a.toFixed(2);
-      document.querySelector('#beta span').textContent = b.toFixed(2);
-      document.querySelector('#gamma span').textContent = g.toFixed(2);
+      document.getElementById('alphaLabel').textContent = `Alpha (Z): ${a.toFixed(2)}`;
+      document.getElementById('betaLabel').textContent = `Beta (X): ${b.toFixed(2)}`;
+      document.getElementById('gammaLabel').textContent = `Gamma (Y): ${g.toFixed(2)}`;
 
       updateGraph(alphaCtx, alphaData, a);
       updateGraph(betaCtx, betaData, b);
@@ -145,8 +198,8 @@
       }
     });
 
-    document.getElementById('theme-toggle').addEventListener('click', () => {
-      document.body.classList.toggle('dark');
+    document.getElementById('theme-toggle').addEventListener('change', (e) => {
+      document.body.classList.toggle('dark', e.target.checked);
     });
   </script>
 
