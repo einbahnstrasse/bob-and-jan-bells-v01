@@ -1,4 +1,4 @@
-// Create on-page debug console function
+// Debug logger
 window.log = function (...args) {
   const debugDiv = document.getElementById("debug-console");
   if (debugDiv) {
@@ -10,7 +10,51 @@ window.log = function (...args) {
   console.log(...args);
 };
 
-// Hook into theme toggle
+// Gyro setup
+function enableGyro() {
+  if (typeof DeviceOrientationEvent !== "undefined" &&
+      typeof DeviceOrientationEvent.requestPermission === "function") {
+    // iOS 13+ requires permission
+    DeviceOrientationEvent.requestPermission()
+      .then(response => {
+        if (response === 'granted') {
+          startGyro();
+        } else {
+          log("Gyro permission denied.");
+        }
+      })
+      .catch(err => {
+        log("Error requesting gyro permission:", err);
+      });
+  } else {
+    // Non-iOS browsers
+    startGyro();
+  }
+}
+
+// Begin listening to gyro
+function startGyro() {
+  log("Gyroscope permission granted. Listening for data...");
+  window.addEventListener("deviceorientation", handleGyro);
+}
+
+// Actual handler
+function handleGyro(event) {
+  if (event.alpha === null && event.beta === null && event.gamma === null) {
+    log("No gyroscope data available.");
+    return;
+  }
+
+  const alpha = parseFloat(event.alpha.toFixed(2));
+  const beta = parseFloat(event.beta.toFixed(2));
+  const gamma = parseFloat(event.gamma.toFixed(2));
+
+  log("Gyroscope data received:", { alpha, beta, gamma });
+
+  // TODO: trigger synth and visualization updates here
+}
+
+// Theme toggle
 document.addEventListener("DOMContentLoaded", () => {
   const toggle = document.getElementById("theme-toggle");
   if (toggle) {
@@ -19,21 +63,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Hook into gyro enabling
   const enableButton = document.getElementById("enable-button");
   if (enableButton) {
     enableButton.addEventListener("click", () => {
       log("Enable Gyro button clicked. Waiting for motion data...");
+      enableGyro();
     });
-
-    window.addEventListener("deviceorientation", (event) => {
-      if (event.alpha || event.beta || event.gamma) {
-        log("Gyroscope data received:", {
-          alpha: event.alpha.toFixed(2),
-          beta: event.beta.toFixed(2),
-          gamma: event.gamma.toFixed(2)
-        });
-      }
-    }, { once: true }); // Only log the first reading for now
   }
 });
