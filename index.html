@@ -219,6 +219,15 @@
 
   <button id="enable-button">Enable Gyro and Sound</button>
 
+<label for="bell-select" style="margin-top: 1rem; display: block;">Choose a bell:</label>
+<select id="bell-select" style="font-size: 1rem; padding: 0.3rem; margin-bottom: 1rem;">
+  <option value="archeos-bell.wav" selected>Archeos Bell</option>
+  <option value="BigBend.wav">Big Ben (London)</option>
+  <option value="WinchesterBell.wav">Winchester Bell</option>
+  <option value="NotreDameParis.wav">Notre Dame (Paris)</option>
+</select>
+
+
   <label class="toggle-label">
     Dark Mode
     <div class="switch">
@@ -262,6 +271,24 @@
     let sampler;
     const gainNode = new Tone.Gain().toDestination();
 
+    function createSampler(filename) {
+      return new Tone.Sampler({
+        urls: { C4: "./media/" + filename },
+        onload: () => log("Loaded: " + filename)
+      });
+    }
+
+    document.getElementById("bell-select").addEventListener("change", (e) => {
+      const newSample = e.target.value;
+      if (sampler) {
+        sampler.disconnect();
+        sampler.dispose();
+      }
+      sampler = createSampler(newSample);
+      sampler.connect(gainNode);
+      log("Switched to: " + newSample);
+    });
+
     function log(message) {
       const logDiv = document.getElementById("debug-log");
       if (logDiv) {
@@ -300,10 +327,8 @@
       await Tone.start();
       log("Tone.js started");
 
-      sampler = new Tone.Sampler({
-        urls: { C4: "./media/archeos-bell.wav" },
-        onload: () => log("Sampler loaded."),
-      }).connect(gainNode);
+      sampler = createSampler(document.getElementById("bell-select").value);
+      sampler.connect(gainNode);
     }
 
 function triggerBell(a, b, g, detune = 0, volume = 0) {
