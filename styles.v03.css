@@ -66,15 +66,23 @@ h1 {
   flex-direction: column;
   align-items: center;
   height: 300px;
-  width: 50px;          /* ✅ narrower for mobile view */
+  width: 70px;          /* ✅ narrower for mobile view */
   flex-shrink: 0;       /* ✅ prevent it from shrinking out of view */
   margin: 0;
+  margin-top: 2rem;
 }
 
-#pitch-slider {
+/* #pitch-slider {
   height: 100%;
   width: 10px;
   background-color:#1e1e1e;
+} */
+
+#pitch-slider {
+  height: 80%;
+  width: 10px;
+  writing-mode: bt-lr; /* vertical slider if supported */
+  /* transform: rotate(270deg); force orientation */
 }
 
 #pitch-slider .noUi-connect {
@@ -339,4 +347,66 @@ input:checked + .slider:before {
   color: var(--text-color);
   cursor: pointer;
   z-index: 1002;
+}
+
+.main-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* .left-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 100px;
+  margin-top: 1rem;
+} */
+
+.left-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  padding-top: 1rem;
+}
+
+/* .pitch-slider-wrapper {
+  margin-top: 2rem;
+  width: 100%;
+} */
+
+.pitch-slider-wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: stretch;
+  margin-top: 2rem;
+  height: calc(100vh - 100px); /* Adjust offset for menu/header */
+  min-height: 300px;
+}
+
+.content-column {
+  flex-grow: 1;
+  max-width: 100%;
+}
+
+.controls-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.bell-select-group {
+  display: flex;
+  flex-direction: column;
+}
+
+#bell-select {
+  max-width: 180px;
 }

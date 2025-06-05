@@ -163,6 +163,7 @@ noUiSlider.create(pitchSlider, {
   step: 1,
   connect: true,
   orientation: 'vertical',
+  // height: calc(100vh - 100px); /* or fine-tune with px or % */
   direction: 'rtl',
   range: {
     min: 24,

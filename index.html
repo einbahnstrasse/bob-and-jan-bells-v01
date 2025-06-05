@@ -13,7 +13,7 @@
 <body class="dark">
   <div class="main-layout">
 
-    <div class="hamburger-menu">
+    <!-- <div class="hamburger-menu">
       <input type="checkbox" id="menu-toggle">
       <label for="menu-toggle" class="menu-icon">
         <span></span>
@@ -29,16 +29,92 @@
           <li><a href="#" id="credits-link">Credits</a></li>
         </ul>
       </div>
-    </div>
+    </div> -->
 
-    <div class="pitch-slider-wrapper">
+    <!-- <div class="pitch-slider-wrapper">
       <label for="pitch-slider">Pitch Range</label>
       <div id="pitch-slider"></div>
-      <!-- <div id="pitch-label">Pitch Range: C3 – C5</div> -->
+    </div> -->
+    <div class="left-column">
+      <div class="hamburger-menu">
+        <input type="checkbox" id="menu-toggle">
+        <label for="menu-toggle" class="menu-icon">
+          <span></span>
+          <span></span>
+          <span></span>
+        </label>
+
+        <div class="menu">
+          <div class="menu-close" id="menu-close">&times;</div>
+          <ul>
+            <li><a href="#" id="info-link">About</a></li>
+            <li><a href="#" id="help-link">How to Use + Help</a></li>
+            <li><a href="#" id="credits-link">Credits</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pitch-slider-wrapper">
+        <label for="pitch-slider">Pitch<br>Range</label>
+        <div id="pitch-slider"></div>
+      </div>
     </div>
+
+
     <div class="content-column">
       <h1>Bob & Jan's Bells</h1>
       <div class="byline"><em>With Love — <a href="https://louisgoldford.com" target="_blank">Louis</a> and Eszter</a></em></div>
+
+      <!-- <div class="gyro-graph-stack">
+        <div class="canvas-container">
+          <canvas id="alphaChart" width="300" height="100"></canvas>
+          <div class="gyro-label" id="alphaLabel">Pitch (left ↔ right): 0.00</div>
+        </div>
+        <div class="canvas-container">
+          <canvas id="betaChart" width="300" height="100"></canvas>
+          <div class="gyro-label" id="betaLabel">Trigger (front ↔ back): 0.00</div>
+        </div>
+        <div class="canvas-container">
+          <canvas id="gammaChart" width="300" height="100"></canvas>
+          <div class="gyro-label" id="gammaLabel">Volume (side ↔ side): 0.00</div>
+        </div>
+      </div> -->
+      <!-- <button id="enable-button">START</button> -->
+      <!-- <label for="bell-select">Choose a bell:</label>
+      <select id="bell-select">
+        <option value="archeos-bell.wav" selected>Archeos Bell</option>
+        <option value="BigBend.wav">Big Ben (London)</option>
+        <option value="WinchesterBell.wav">Winchester Bell</option>
+        <option value="NotreDameParis.wav">Notre Dame (Paris)</option>
+      </select> -->
+
+      <div class="controls-row">
+      <div class="bell-select-group">
+        <label for="bell-select">Choose a bell:</label>
+        <select id="bell-select">
+          <option value="archeos-bell.wav" selected>Archeos Bell</option>
+          <option value="BigBend.wav">Big Ben (London)</option>
+          <option value="WinchesterBell.wav">Winchester Bell</option>
+          <option value="NotreDameParis.wav">Notre Dame (Paris)</option>
+        </select>
+      </div>
+      <button id="enable-button">START</button>
+    </div>
+
+      <div class="toggle-row">
+        <label class="toggle-label">Dark Mode
+          <div class="switch">
+            <input type="checkbox" id="theme-toggle" checked />
+            <span class="slider"></span>
+          </div>
+        </label>
+        <label class="toggle-label">Mute
+          <div class="switch">
+            <input type="checkbox" id="mute-toggle" />
+            <span class="slider"></span>
+          </div>
+        </label>
+      </div>
 
       <div class="gyro-graph-stack">
         <div class="canvas-container">
@@ -54,28 +130,7 @@
           <div class="gyro-label" id="gammaLabel">Volume (side ↔ side): 0.00</div>
         </div>
       </div>
-      <button id="enable-button">START</button>
-      <label for="bell-select">Choose a bell:</label>
-      <select id="bell-select">
-        <option value="archeos-bell.wav" selected>Archeos Bell</option>
-        <option value="BigBend.wav">Big Ben (London)</option>
-        <option value="WinchesterBell.wav">Winchester Bell</option>
-        <option value="NotreDameParis.wav">Notre Dame (Paris)</option>
-      </select>
-      <div class="toggle-row">
-        <label class="toggle-label">Dark Mode
-          <div class="switch">
-            <input type="checkbox" id="theme-toggle" checked />
-            <span class="slider"></span>
-          </div>
-        </label>
-        <label class="toggle-label">Mute
-          <div class="switch">
-            <input type="checkbox" id="mute-toggle" />
-            <span class="slider"></span>
-          </div>
-        </label>
-      </div>
+
     </div>
   </div>
   <div id="overlay"><div id="overlay-content"><button id="overlay-close">&times;</button><p>Placeholder text.</p></div></div>
