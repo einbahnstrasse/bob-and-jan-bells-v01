@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bob & Jan's Bells</title>
+  <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js"></script>
+  <link rel="stylesheet" href="styles.v01.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.js"></script>
+</head>
+
+<body class="dark">
+  
+<!-- <div style="display: flex; flex-direction: row; align-items: flex-start; justify-content: center; gap: 2rem;">
+  Pitch slider column
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <label for="pitch-slider" style="margin-bottom: 0.5rem;">Pitch Range</label>
+    <div id="pitch-slider" style="height: 300px; width: 10px;"></div>
+    <div id="pitch-label" style="margin-top: 0.5rem;">Pitch Range: C3 – C5</div>
+</div> -->
+
+<div class="pitch-slider-wrapper">
+  <label for="pitch-slider">Pitch Range</label>
+  <div id="pitch-slider"></div>
+  <!-- <div id="pitch-label">Pitch Range: C3 – C5</div> -->
+</div>
+
+
+  <!-- Main content column -->
+  <div style="flex: 1;">
+<h1>Bob & Jan's Bells</h1>
+  <div class="byline"><em>With Love — <a href="https://louisgoldford.com" target="_blank">Louis</a> and Eszter</em></div>
+  <!-- <div class="byline">
+    <a href="#" id="info-link">About</a>
+  </div>
+  <div class="byline">
+    <a href="#" id="help-link">How to Use + Help</a>
+  </div>
+  <div class="byline">
+    <a href="#" id="credits-link">Credits</a>
+  </div> -->
+  <nav class="top-navbar">
+    <a href="#" id="info-link">About</a>
+    <a href="#" id="help-link">How to Use + Help</a>
+    <a href="#" id="credits-link">Credits</a>
+  </nav>
+
+
+
+  
+<div style="display:flex; flex-direction:column; align-items:center; margin-top:1rem;">
+  <!-- <label for="pitch-slider" style="margin-bottom: 0.5rem;">Pitch Range</label> -->
+  <div id="pitch-slider" style="height: 300px; width: 10px;"></div>
+<!-- <div id="pitch-label" style="margin-top: 0.5rem;">Pitch Range: C3 – C5</div> -->
+</div>
+
+
+<!-- <div class="canvas-container">
+    <canvas id="alphaChart" width="300" height="100"></canvas>
+    <div class="gyro-label" id="alphaLabel">Pitch (left ↔ right): 0.00</div>
+  </div>
+  
+<div style="display:flex; flex-direction:column; align-items:center; margin-top:1rem;">
+  <label for="pitch-slider" style="margin-bottom: 0.5rem;">Pitch Range</label>
+  <div id="pitch-slider" style="height: 300px; width: 10px;"></div>
+<div id="pitch-label" style="margin-top: 0.5rem;">Pitch Range: C3 – C5</div>
+</div>
+
+
+<div class="canvas-container">
+    <canvas id="betaChart" width="300" height="100"></canvas>
+    <div class="gyro-label" id="betaLabel">Trigger (front ↔ back): 0.00</div>
+  </div>
+  
+<div style="display:flex; flex-direction:column; align-items:center; margin-top:1rem;">
+  <label for="pitch-slider" style="margin-bottom: 0.5rem;">Pitch Range</label>
+  <div id="pitch-slider" style="height: 300px; width: 10px;"></div>
+<div id="pitch-label" style="margin-top: 0.5rem;">Pitch Range: C3 – C5</div>
+</div>
+
+
+<div class="canvas-container">
+    <canvas id="gammaChart" width="300" height="100"></canvas>
+    <div class="gyro-label" id="gammaLabel">Volume (side ↔ side): 0.00</div>
+  </div> -->
+
+<div class="gyro-graph-stack">
+  <div class="canvas-container">
+    <canvas id="alphaChart" width="300" height="100"></canvas>
+    <div class="gyro-label" id="alphaLabel">Pitch (left ↔ right): 0.00</div>
+  </div>
+  <div class="canvas-container">
+    <canvas id="betaChart" width="300" height="100"></canvas>
+    <div class="gyro-label" id="betaLabel">Trigger (front ↔ back): 0.00</div>
+  </div>
+  <div class="canvas-container">
+    <canvas id="gammaChart" width="300" height="100"></canvas>
+    <div class="gyro-label" id="gammaLabel">Volume (side ↔ side): 0.00</div>
+  </div>
+</div>
+
+
+<button id="enable-button">START</button>
+
+<label for="bell-select" style="margin-top: 0.5rem; display: block;">Choose a bell:</label>
+<select id="bell-select" style="font-size: 1rem; padding: 0.3rem; margin-bottom: 1rem;">
+  <option value="archeos-bell.wav" selected>Archeos Bell</option>
+  <option value="BigBend.wav">Big Ben (London)</option>
+  <option value="WinchesterBell.wav">Winchester Bell</option>
+  <option value="NotreDameParis.wav">Notre Dame (Paris)</option>
+</select>
+
+
+  <!-- <label class="toggle-label">
+    Dark Mode
+    <div class="switch">
+      <input type="checkbox" id="theme-toggle" checked>
+      <span class="slider"></span>
+    </div>
+  </label>
+
+  <label class="toggle-label">
+    Mute
+    <div class="switch">
+      <input type="checkbox" id="mute-toggle">
+      <span class="slider"></span>
+    </div>
+  </label> -->
+  <div class="toggle-row">
+    <label class="toggle-label">
+      Dark Mode
+      <div class="switch">
+        <input type="checkbox" id="theme-toggle" checked>
+        <span class="slider"></span>
+      </div>
+    </label>
+
+    <label class="toggle-label">
+      Mute
+      <div class="switch">
+        <input type="checkbox" id="mute-toggle">
+        <span class="slider"></span>
+      </div>
+    </label>
+  </div>
+
+  <div id="overlay">
+    <div id="overlay-content">
+      <button id="overlay-close">&times;</button>
+      <p>This is a placeholder explanation of what this synth does. You can add your own detailed, non-musician-friendly description here later.</p>
+    </div>
+  </div>
+
+  <!-- Help overlay -->
+  <div id="overlay-help">
+    <div id="overlay-content-help">
+      <button id="overlay-close-help">&times;</button>
+
+      <h2>How to Use</h2>
+      <p>
+        1. Tap <strong>Enable Gyro + Sound</strong>.<br>
+        2. When asked for <em>Motion &amp; Orientation</em> access, tap <strong>Allow / OK</strong>.<br>
+        3. Tilt your phone side-to-side to strike bell notes (more tilt = louder).
+      </p>
+
+      <h2>Troubleshooting</h2>
+      <ul>
+        <li>No sound or graphs?<br>
+          • Ensure you approved the sensor permission.<br>
+          • iOS: Settings &rarr; Safari &rarr; Motion &amp; Orientation Access → ON.
+        </li>
+        <li>Still stuck? Clear your site history/cache and reload.</li>
+        <li>This site must be served over HTTPS; motion is blocked otherwise.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Credits overlay -->
+  <div id="overlay-credits">
+    <div id="overlay-content-credits">
+      <button id="overlay-close-credits">&times;</button>
+      <h2>Credits</h2>
+      <p>Concept, design, and code by Louis Goldford.</p>
+      <p>Special thanks to Eszter and everyone who helped test.</p>
+      <p>Bells recorded from [source details here, or leave blank for now].</p>
+    </div>
+  </div>
+
+  <script>
+    let sampler;
+    const gainNode = new Tone.Gain().toDestination();
+
+    function createSampler(filename) {
+      return new Tone.Sampler({
+        urls: { C4: "./media/" + filename },
+        onload: () => log("Loaded: " + filename)
+      });
+    }
+
+    document.getElementById('mute-toggle').addEventListener('change', (e) => {
+      const isMuted = e.target.checked;
+      gainNode.gain.rampTo(isMuted ? 0 : 1, 0.1); // smooth fade over 100ms
+      log("Audio " + (isMuted ? "muted" : "unmuted"));
+    });
+
+
+
+    document.getElementById("bell-select").addEventListener("change", (e) => {
+      const newSample = e.target.value;
+      if (sampler) {
+        sampler.disconnect();
+        sampler.dispose();
+      }
+      sampler = createSampler(newSample);
+      sampler.connect(gainNode);
+      log("Switched to: " + newSample);
+    });
+
+    function log(message) {
+      const logDiv = document.getElementById("debug-log");
+      if (logDiv) {
+        const entry = document.createElement("div");
+        entry.textContent = message;
+        logDiv.appendChild(entry);
+        logDiv.scrollTop = logDiv.scrollHeight;
+      }
+    }
+
+    const alphaData = [], betaData = [], gammaData = [];
+    const maxPoints = 100;
+
+    function updateGraph(ctx, dataArray, newVal) {
+      if (dataArray.length >= maxPoints) dataArray.shift();
+      dataArray.push(newVal);
+
+      const min = Math.min(...dataArray);
+      const max = Math.max(...dataArray);
+      const range = max - min || 1;
+
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.beginPath();
+
+      dataArray.forEach((val, i) => {
+        const x = (i / maxPoints) * ctx.canvas.width;
+        const y = ctx.canvas.height * (1 - (val - min) / range);
+        ctx.lineTo(x, y);
+      });
+
+      ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--accent');
+      ctx.stroke();
+    }
+
+    async function setupSampler() {
+      await Tone.start();
+      log("Tone.js started");
+
+      sampler = createSampler(document.getElementById("bell-select").value);
+      sampler.connect(gainNode);
+    }
+
+function triggerBell(a, b, g, detune = 0, volume = 0) {
+  if (!sampler) return;
+  sampler.volume.value = volume;
+
+  if (Math.abs(b) > 30) {
+    const normalizedAlpha = Math.max(-180, Math.min(180, a));
+    const alphaIndex = Math.floor((normalizedAlpha + 180) / 360 * noteMap.length);
+    const pitchNote = pitchRange[Math.floor((normalizedAlpha + 180) / 360 * pitchRange.length)] || "C4";
+    const velocity = Math.max(0.1, Math.min(1, Math.abs(b) / 90));
+    sampler.triggerAttack(pitchNote, undefined, velocity);
+    log(`Triggered note: ${pitchNote}, Velocity: ${velocity.toFixed(2)} (α=${a.toFixed(2)} β=${b.toFixed(2)})`);
+  }
+
+  log(`Triggered bell | Detune: ${detune.toFixed(2)} cents | Volume: ${volume.toFixed(2)} dB`);
+}
+    document.getElementById('enable-button').addEventListener('click', async () => {
+      await setupSampler();
+      log("Button clicked. Triggering sound.");
+      triggerBell();
+
+      const enableGyro = () => {
+        window.addEventListener('devicemotion', (event) => {
+          const a = event.rotationRate.alpha || 0;
+          const b = event.rotationRate.beta || 0;
+          const g = event.rotationRate.gamma || 0;
+
+          document.getElementById('alphaLabel').textContent = `Pitch (left ↔ right): ${a.toFixed(2)}`;
+          document.getElementById('betaLabel').textContent = `Trigger (front ↔ back): ${b.toFixed(2)}`;
+          document.getElementById('gammaLabel').textContent = `Volume (side ↔ side): ${g.toFixed(2)}`;
+
+          updateGraph(alphaChart.getContext('2d'), alphaData, a);
+          updateGraph(betaChart.getContext('2d'), betaData, b);
+          updateGraph(gammaChart.getContext('2d'), gammaData, g);
+
+          // Map beta (X) to pitch in cents (±500)
+          const detune = Math.max(-500, Math.min(500, b * 3));
+
+          // Map gamma (Y) to volume in dB (from -20 to 0)
+          const volume = Math.max(-20, Math.min(0, g / 10));
+
+          triggerBell(a, b, g, detune, volume);
+        });
+      };
+
+      if (typeof DeviceMotionEvent.requestPermission === 'function') {
+        DeviceMotionEvent.requestPermission()
+          .then(permissionState => {
+            if (permissionState === 'granted') {
+              log("Gyro permission granted");
+              enableGyro();
+            } else {
+              alert('Permission denied.');
+              log('Permission denied.');
+            }
+          })
+          .catch(console.error);
+      } else {
+        enableGyro();
+      }
+    });
+
+    document.getElementById('theme-toggle').addEventListener('change', (e) => {
+      const isDark = e.target.checked;
+      document.body.classList.toggle('light', !isDark);
+      document.body.classList.toggle('dark', isDark);
+      log("Theme toggled: " + (isDark ? "dark" : "light"));
+    });
+
+    document.getElementById('info-link').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('overlay').classList.add('active');
+    });
+
+    document.getElementById('overlay-close').addEventListener('click', () => {
+      document.getElementById('overlay').classList.remove('active');
+    });
+
+    // Help overlay handlers
+    document.getElementById('help-link').addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById('overlay-help').classList.add('active');
+    });
+    document.getElementById('overlay-close-help').addEventListener('click', () => {
+      document.getElementById('overlay-help').classList.remove('active');
+    });
+    document.getElementById('credits-link').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('overlay-credits').classList.add('active');
+    });
+    document.getElementById('overlay-close-credits').addEventListener('click', () => {
+      document.getElementById('overlay-credits').classList.remove('active');
+    });
+
+const noteMap = Array.from({ length: 128 }, (_, i) => Tone.Frequency(i, "midi").toNote());
+
+const pitchSlider = document.getElementById("pitch-slider");
+noUiSlider.create(pitchSlider, {
+  start: [48, 72],  // C3 to C5
+  step: 1,
+  connect: true,
+  orientation: 'vertical',
+  direction: 'rtl',
+  range: {
+    min: 24,
+    max: 96
+  },
+  tooltips: [true, true],
+  format: {
+    to: value => Math.round(value),
+    from: value => Number(value)
+  }
+});
+
+let pitchRange = noteMap.slice(48, 73);
+
+// Add pitch labels (tick marks) to the vertical slider
+pitchSlider.noUiSlider.pips({
+  mode: 'values',
+  values: [24, 36, 48, 60, 72, 84, 96],  // C2 to C7
+  density: 10,
+  format: {
+    to: value => Tone.Frequency(value, "midi").toNote(),
+    from: () => {}
+  }
+});
+
+// Override tooltip display with note names
+// pitchSlider.noUiSlider.on('update', (values, handle, rawVals) => {
+//   const [low, high] = rawVals.map(v => Math.round(v));
+//   pitchRange = noteMap.slice(low, high + 1);
+//   document.getElementById("pitch-label").textContent = `Pitch Range: ${noteMap[low]} – ${noteMap[high]}`;
+//   const tooltips = pitchSlider.querySelectorAll('.noUi-tooltip');
+//   if (tooltips.length === 2) {
+//     tooltips[0].textContent = noteMap[low];
+//     tooltips[1].textContent = noteMap[high];
+//   }
+// });
+
+pitchSlider.noUiSlider.on('update', (values, handle, rawVals) => {
+  const [low, high] = rawVals.map(v => Math.round(v));
+  pitchRange = noteMap.slice(low, high + 1);
+
+  // Update label
+  const label = document.getElementById("pitch-label");
+  if (label) {
+    label.textContent = `Pitch Range: ${noteMap[low]} – ${noteMap[high]}`;
+  }
+
+  // Override tooltip display with note names
+  const tooltips = pitchSlider.querySelectorAll('.noUi-tooltip');
+  if (tooltips.length === 2) {
+    tooltips[0].textContent = noteMap[low];
+    tooltips[1].textContent = noteMap[high];
+  }
+});
+
+
+
+</script>
+
+  </div>
+
+<!-- <div id="debug-log" style="
+      width: 90%;
+      max-height: 200px;
+      overflow-y: auto;
+      background: #222;
+      color: #0f0;
+      font-family: monospace;
+      font-size: 0.8rem;
+      padding: 0.5rem;
+      margin: 1rem auto 0 auto;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    ">
+    <strong>Debug Console:</strong>
+  </div> -->
+
+  <script>
+    log("Tone defined in inline script?", typeof Tone !== 'undefined');  // <- should log "true"
+    
+    // everything from log(), playSound(), gyro listener, theme toggle, etc.
+    // including sampler creation and Tone.Sampler triggerAttack calls
+    
+  </script>
+
+</body>
+</html>
