@@ -161,6 +161,22 @@
       border: none;
       cursor: pointer;
     }
+
+    #help-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,.85);
+      color: white;
+      display: none;                /* ←  make it invisible by default  */
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      font-size: .9rem;
+      text-align: left;
+      z-index: 999;
+    }
+  #help-overlay.active { display: flex; }
+
   </style>
 </head>
 <body class="dark">
@@ -221,14 +237,13 @@
       <ul>
         <li>No sound or graphs?  
             • Make sure the browser showed—and you approved—the sensor prompt.<br>
-            • iOS: Settings › Safari › <strong>Motion & Orientation Access</strong> → ON.</li>
-        <li>Still stuck? Clear this site’s cache / history, reload, then hit
+            • iOS: Settings → Safari → <strong>Motion & Orientation Access</strong> → ON.</li>
+        <li>Still stuck? Clear this site's cache / history, reload, then hit
             <em>Enable</em> again so the permission dialog re-appears.</li>
         <li>The page <em>must</em> be served over&nbsp;HTTPS; sensors are blocked on plain HTTP.</li>
       </ul>
     </div>
   </div>
-
 
   <script>
     let sampler;
