@@ -485,6 +485,9 @@ pitchSlider.noUiSlider.on('update', (values, handle, rawVals) => {
   pitchRange = noteMap.slice(low, high + 1);
 });
 
+window.addEventListener('load', () => {
+  pitchSlider.noUiSlider.set([48, 72]);
+});
 
 </script>
 
