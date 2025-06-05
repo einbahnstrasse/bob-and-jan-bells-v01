@@ -236,14 +236,6 @@
     </div>
   </label>
 
-  <label class="toggle-label">
-    Mute
-    <div class="switch">
-      <input type="checkbox" id="mute-toggle">
-      <span class="slider"></span>
-    </div>
-  </label>
-
   <div id="overlay">
     <div id="overlay-content">
       <button id="overlay-close">&times;</button>
@@ -285,12 +277,6 @@
         onload: () => log("Loaded: " + filename)
       });
     }
-
-    document.getElementById('mute-toggle').addEventListener('change', (e) => {
-      const isMuted = e.target.checked;
-      gainNode.mute = isMuted;
-      log("Audio " + (isMuted ? "muted" : "unmuted"));
-    });
 
     document.getElementById("bell-select").addEventListener("change", (e) => {
       const newSample = e.target.value;
