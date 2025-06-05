@@ -288,9 +288,11 @@
 
     document.getElementById('mute-toggle').addEventListener('change', (e) => {
       const isMuted = e.target.checked;
-      gainNode.mute = isMuted;
+      gainNode.gain.rampTo(isMuted ? 0 : 1, 0.1); // smooth fade over 100ms
       log("Audio " + (isMuted ? "muted" : "unmuted"));
     });
+
+
 
     document.getElementById("bell-select").addEventListener("change", (e) => {
       const newSample = e.target.value;
