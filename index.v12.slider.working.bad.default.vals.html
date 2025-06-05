@@ -4,24 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bob & Jan's Bells</title>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js" defer>
-// Ensure correct slider thumb placement after DOM renders
-window.addEventListener('DOMContentLoaded', () => {
-  if (pitchSlider?.noUiSlider) {
-    pitchSlider.noUiSlider.set([48, 72]); // C3 to C5
-  }
-});
-
-</script> -->
-  <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js">
-// Ensure correct slider thumb placement after DOM renders
-window.addEventListener('DOMContentLoaded', () => {
-  if (pitchSlider?.noUiSlider) {
-    pitchSlider.noUiSlider.set([48, 72]); // C3 to C5
-  }
-});
-
-</script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js" defer></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js"></script>
   <style>
     :root {
       --bg-color: #121212;
@@ -211,15 +195,7 @@ window.addEventListener('DOMContentLoaded', () => {
   </style>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.js">
-// Ensure correct slider thumb placement after DOM renders
-window.addEventListener('DOMContentLoaded', () => {
-  if (pitchSlider?.noUiSlider) {
-    pitchSlider.noUiSlider.set([48, 72]); // C3 to C5
-  }
-});
-
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.js"></script>
 </head>
 
 <body class="dark">
@@ -509,13 +485,8 @@ pitchSlider.noUiSlider.on('update', (values, handle, rawVals) => {
   pitchRange = noteMap.slice(low, high + 1);
 });
 
-
-
-// Ensure correct slider thumb placement after DOM renders
-window.addEventListener('DOMContentLoaded', () => {
-  if (pitchSlider?.noUiSlider) {
-    pitchSlider.noUiSlider.set([48, 72]); // C3 to C5
-  }
+window.addEventListener('load', () => {
+  pitchSlider.noUiSlider.set([48, 72]);
 });
 
 </script>
@@ -542,15 +513,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // everything from log(), playSound(), gyro listener, theme toggle, etc.
     // including sampler creation and Tone.Sampler triggerAttack calls
     
-  
-// Ensure correct slider thumb placement after DOM renders
-window.addEventListener('DOMContentLoaded', () => {
-  if (pitchSlider?.noUiSlider) {
-    pitchSlider.noUiSlider.set([48, 72]); // C3 to C5
-  }
-});
-
-</script>
+  </script>
 
 </body>
 </html>
