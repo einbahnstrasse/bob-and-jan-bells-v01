@@ -162,20 +162,35 @@
       cursor: pointer;
     }
 
-    #help-overlay {
+    #overlay-help {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,.85);
+      background: rgba(0, 0, 0, 0.85);
       color: white;
-      display: none;                /* ←  make it invisible by default  */
+      display: none;
       justify-content: center;
       align-items: center;
       padding: 2rem;
-      font-size: .9rem;
+      font-size: 0.9rem;
       text-align: left;
       z-index: 999;
     }
-  #help-overlay.active { display: flex; }
+    #overlay-help.active {
+      display: flex;
+    }
+    #overlay-content-help {
+      max-width: 600px;
+    }
+    #overlay-close-help {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      background: none;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
 
   </style>
 </head>
@@ -186,7 +201,7 @@
     <a href="#" id="info-link">What the hell is this thing?</a>
   </div>
   <div class="byline">
-    <a href="#" id="help-link">How&nbsp;to&nbsp;Use&nbsp;+&nbsp;Help</a>
+    <a href="#" id="help-link">How to Use + Help</a>
   </div>
 
   <div class="canvas-container">
@@ -219,28 +234,26 @@
     </div>
   </div>
 
-  <!-- Help / How-to overlay -->
-  <div id="help-overlay">
-    <div id="help-overlay-content">
-      <button id="help-overlay-close">&times;</button>
+  <!-- Help overlay -->
+  <div id="overlay-help">
+    <div id="overlay-content-help">
+      <button id="overlay-close-help">&times;</button>
 
       <h2>How to Use</h2>
       <p>
         1. Tap <strong>Enable Gyro + Sound</strong>.<br>
-        2. When iOS/Chrome asks for <em>“Motion & Orientation”</em>, press
-        <strong>Allow / OK</strong>.<br>
-        3. Tilt your phone left ↔ right to strike different bell notes.<br>
-        (More tilt = louder; forward/back can be mapped later.)
+        2. When asked for <em>Motion &amp; Orientation</em> access, tap <strong>Allow / OK</strong>.<br>
+        3. Tilt your phone side-to-side to strike bell notes (more tilt = louder).
       </p>
 
       <h2>Troubleshooting</h2>
       <ul>
-        <li>No sound or graphs?  
-            • Make sure the browser showed—and you approved—the sensor prompt.<br>
-            • iOS: Settings → Safari → <strong>Motion & Orientation Access</strong> → ON.</li>
-        <li>Still stuck? Clear this site's cache / history, reload, then hit
-            <em>Enable</em> again so the permission dialog re-appears.</li>
-        <li>The page <em>must</em> be served over&nbsp;HTTPS; sensors are blocked on plain HTTP.</li>
+        <li>No sound or graphs?<br>
+          • Ensure you approved the sensor permission.<br>
+          • iOS: Settings &rarr; Safari &rarr; Motion &amp; Orientation Access → ON.
+        </li>
+        <li>Still stuck? Clear your site history/cache and reload.</li>
+        <li>This site must be served over HTTPS; motion is blocked otherwise.</li>
       </ul>
     </div>
   </div>
@@ -369,7 +382,16 @@ function triggerBell(a, b, g, detune = 0, volume = 0) {
     document.getElementById('overlay-close').addEventListener('click', () => {
       document.getElementById('overlay').classList.remove('active');
     });
-  
+
+    // Help overlay handlers
+    document.getElementById('help-link').addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById('overlay-help').classList.add('active');
+    });
+    document.getElementById('overlay-close-help').addEventListener('click', () => {
+      document.getElementById('overlay-help').classList.remove('active');
+    });
+
 const noteMap = [
   "C3", "C#3", "D3", "D#3", "E3", "F3", "F#3", "G3", "G#3", "A3", "A#3", "B3",
   "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"
