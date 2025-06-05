@@ -193,10 +193,19 @@ canvas {
   display: inline-block;
   width: 60px;
   height: 34px;
+    /* Reduce the overall size of the toggle switch */
+  transform: scale(0.85); /* Try 0.75 or 0.9 for fine-tuning */
+  transform-origin: left center; /* Keeps alignment to the label text */
 }
 
 .switch input {
   display: none;
+}
+
+/* Optional: Adjust spacing if needed */
+.toggle-label {
+  font-size: 0.9rem;       /* Slightly smaller text */
+  margin-right: 1rem;      /* Spacing between switches */
 }
 
 .slider {
@@ -409,4 +418,28 @@ input:checked + .slider:before {
 
 #bell-select {
   max-width: 180px;
+  width: 100%;
+}
+
+#enable-button {
+  white-space: nowrap;
+  padding: 0.5rem 1rem;
+}
+
+@media (max-width: 600px) {
+  .pitch-slider-wrapper {
+    max-height: 380px;
+  }
+}
+
+@media (max-width: 400px) {
+  .pitch-slider-wrapper {
+    max-height: 340px;
+  }
+}
+
+@media (max-width: 320px) {
+  .pitch-slider-wrapper {
+    max-height: 300px;
+  }
 }
