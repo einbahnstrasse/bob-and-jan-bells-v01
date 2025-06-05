@@ -1,4 +1,3 @@
-
 let sampler;
 const gainNode = new Tone.Gain().toDestination();
 
@@ -11,7 +10,7 @@ function createSampler(filename) {
 
 document.getElementById('mute-toggle').addEventListener('change', (e) => {
   const isMuted = e.target.checked;
-  gainNode.gain.rampTo(isMuted ? 0 : 1, 0.1);
+  gainNode.gain.rampTo(isMuted ? 0 : 1, 0.1); // smooth fade over 100ms
   log("Audio " + (isMuted ? "muted" : "unmuted"));
 });
 
@@ -63,6 +62,7 @@ function updateGraph(ctx, dataArray, newVal) {
 async function setupSampler() {
   await Tone.start();
   log("Tone.js started");
+
   sampler = createSampler(document.getElementById("bell-select").value);
   sampler.connect(gainNode);
 }
@@ -138,6 +138,7 @@ document.getElementById('info-link').addEventListener('click', (e) => {
 document.getElementById('overlay-close').addEventListener('click', () => {
   document.getElementById('overlay').classList.remove('active');
 });
+
 document.getElementById('help-link').addEventListener('click', (e) => {
   e.preventDefault();
   document.getElementById('overlay-help').classList.add('active');
@@ -145,6 +146,7 @@ document.getElementById('help-link').addEventListener('click', (e) => {
 document.getElementById('overlay-close-help').addEventListener('click', () => {
   document.getElementById('overlay-help').classList.remove('active');
 });
+
 document.getElementById('credits-link').addEventListener('click', (e) => {
   e.preventDefault();
   document.getElementById('overlay-credits').classList.add('active');
@@ -154,6 +156,7 @@ document.getElementById('overlay-close-credits').addEventListener('click', () =>
 });
 
 const noteMap = Array.from({ length: 128 }, (_, i) => Tone.Frequency(i, "midi").toNote());
+
 const pitchSlider = document.getElementById("pitch-slider");
 noUiSlider.create(pitchSlider, {
   start: [48, 72],
@@ -161,7 +164,10 @@ noUiSlider.create(pitchSlider, {
   connect: true,
   orientation: 'vertical',
   direction: 'rtl',
-  range: { min: 24, max: 96 },
+  range: {
+    min: 24,
+    max: 96
+  },
   tooltips: [true, true],
   format: {
     to: value => Math.round(value),
@@ -170,6 +176,7 @@ noUiSlider.create(pitchSlider, {
 });
 
 let pitchRange = noteMap.slice(48, 73);
+
 pitchSlider.noUiSlider.pips({
   mode: 'values',
   values: [24, 36, 48, 60, 72, 84, 96],
@@ -179,6 +186,7 @@ pitchSlider.noUiSlider.pips({
     from: () => {}
   }
 });
+
 pitchSlider.noUiSlider.on('update', (values, handle, rawVals) => {
   const [low, high] = rawVals.map(v => Math.round(v));
   pitchRange = noteMap.slice(low, high + 1);
@@ -193,4 +201,14 @@ pitchSlider.noUiSlider.on('update', (values, handle, rawVals) => {
     tooltips[0].textContent = noteMap[low];
     tooltips[1].textContent = noteMap[high];
   }
+});
+
+document.querySelectorAll('.menu a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('menu-toggle').checked = false;
+  });
+});
+
+document.getElementById('menu-close').addEventListener('click', () => {
+  document.getElementById('menu-toggle').checked = false;
 });

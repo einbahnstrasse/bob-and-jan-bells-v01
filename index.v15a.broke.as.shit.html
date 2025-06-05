@@ -6,14 +6,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bob & Jan's Bells</title>
   <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js"></script>
-  <link rel="stylesheet" href="styles.v03.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.css" />
+  <link rel="stylesheet" href="styles.v03.css"/>
+  <link rel="stylesheet" href="hamburger-menu.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.css"/>
   <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.js"></script>
 </head>
 <body class="dark">
   <div class="main-layout">
-
-    <div class="hamburger-menu">
+    
+    <div class="container">
+      <input id="toggle" type="checkbox" />
+      <label class="toggle-container" for="toggle">
+        <span class="button button-toggle"></span>
+      </label>
+      <nav class="nav">
+        <a class="nav-item" href="#" id="info-link">About</a>
+        <a class="nav-item" href="#" id="help-link">Help</a>
+        <a class="nav-item" href="#" id="credits-link">Credits</a>
+      </nav>
+    </div>
+    
+    <div class="pitch-slider-wrapper">
+      <label for="pitch-slider">Pitch Range</label>
+      <div id="pitch-slider"></div>
+      <!-- <div id="pitch-label">Pitch Range: C3 – C5</div> -->
+    </div>
+    <div class="content-column">
+      <h1>Bob & Jan's Bells</h1>
+      <div class="byline"><em>With Love — <a href="https://louisgoldford.com" target="_blank">Louis</a> and Eszter</a></em></div>
+      <!-- <nav class="top-navbar">
+        <a href="#" id="info-link">About</a>
+        <a href="#" id="help-link">How to Use + Help</a>
+        <a href="#" id="credits-link">Credits</a>
+      </nav> -->
+      <!-- <div class="hamburger-menu">
       <input type="checkbox" id="menu-toggle">
       <label for="menu-toggle" class="menu-icon">
         <span></span>
@@ -29,16 +55,9 @@
           <li><a href="#" id="credits-link">Credits</a></li>
         </ul>
       </div>
-    </div>
+    </div> -->
 
-    <div class="pitch-slider-wrapper">
-      <label for="pitch-slider">Pitch Range</label>
-      <div id="pitch-slider"></div>
-      <!-- <div id="pitch-label">Pitch Range: C3 – C5</div> -->
-    </div>
-    <div class="content-column">
-      <h1>Bob & Jan's Bells</h1>
-      <div class="byline"><em>With Love — <a href="https://louisgoldford.com" target="_blank">Louis</a> and Eszter</a></em></div>
+
 
       <div class="gyro-graph-stack">
         <div class="canvas-container">

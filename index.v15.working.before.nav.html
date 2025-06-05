@@ -12,25 +12,6 @@
 </head>
 <body class="dark">
   <div class="main-layout">
-
-    <div class="hamburger-menu">
-      <input type="checkbox" id="menu-toggle">
-      <label for="menu-toggle" class="menu-icon">
-        <span></span>
-        <span></span>
-        <span></span>
-      </label>
-
-      <div class="menu">
-        <div class="menu-close" id="menu-close">&times;</div>
-        <ul>
-          <li><a href="#" id="info-link">About</a></li>
-          <li><a href="#" id="help-link">How to Use + Help</a></li>
-          <li><a href="#" id="credits-link">Credits</a></li>
-        </ul>
-      </div>
-    </div>
-
     <div class="pitch-slider-wrapper">
       <label for="pitch-slider">Pitch Range</label>
       <div id="pitch-slider"></div>
@@ -39,7 +20,11 @@
     <div class="content-column">
       <h1>Bob & Jan's Bells</h1>
       <div class="byline"><em>With Love — <a href="https://louisgoldford.com" target="_blank">Louis</a> and Eszter</a></em></div>
-
+      <nav class="top-navbar">
+        <a href="#" id="info-link">About</a>
+        <a href="#" id="help-link">How to Use + Help</a>
+        <a href="#" id="credits-link">Credits</a>
+      </nav>
       <div class="gyro-graph-stack">
         <div class="canvas-container">
           <canvas id="alphaChart" width="300" height="100"></canvas>
@@ -81,6 +66,6 @@
   <div id="overlay"><div id="overlay-content"><button id="overlay-close">&times;</button><p>Placeholder text.</p></div></div>
   <div id="overlay-help"><div id="overlay-content-help"><button id="overlay-close-help">&times;</button><p>Help content here.</p></div></div>
   <div id="overlay-credits"><div id="overlay-content-credits"><button id="overlay-close-credits">&times;</button><p>Credits content here.</p></div></div>
-  <script src="script.v01.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
