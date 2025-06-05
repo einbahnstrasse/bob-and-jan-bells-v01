@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bob & Jan's Bells</title>
+  <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js"></script>
+  <style>
+    :root {
+      --bg-color: #121212;
+      --text-color: #fff;
+      --box-bg: #1e1e1e;
+      --accent: #33aaff;
+    }
+
+    body.light {
+      --bg-color: #f0f0f0;
+      --text-color: #000;
+      --box-bg: white;
+      --accent: #007aff;
+    }
+
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+      margin: 0;
+      background: var(--bg-color);
+      color: var(--text-color);
+      text-align: center;
+      padding: 1em;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    h1 {
+      margin-bottom: 0.5rem;
+    }
+
+    .byline {
+      font-size: 0.9rem;
+      margin: 0.2rem 0;
+    }
+
+    .byline a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .canvas-container {
+      position: relative;
+      margin-top: 1rem;
+    }
+
+    .gyro-label {
+      position: absolute;
+      bottom: 8px;
+      left: 10px;
+      font-size: 0.9rem;
+      color: var(--text-color);
+      background: rgba(0, 0, 0, 0.4);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    canvas {
+      background: var(--box-bg);
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    #enable-button {
+      margin-top: 1rem;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .toggle-label {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    .switch input { display: none; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--accent);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      color: white;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      text-align: left;
+      z-index: 999;
+    }
+
+    #overlay.active {
+      display: flex;
+    }
+
+    #overlay-content {
+      max-width: 600px;
+    }
+
+    #overlay-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      background: none;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    #debug-log {
+      width: 90%;
+      max-height: 200px;
+      overflow-y: auto;
+      background: #222;
+      color: #0f0;
+      font-family: monospace;
+      font-size: 0.8rem;
+      padding: 0.5rem;
+      margin: 1rem auto 0 auto;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+<body class="dark">
+  <h1>Bob & Jan's Bells</h1>
+  <div class="byline">Love, <a href="https://louisgoldford.com" target="_blank">Louis</a> and Eszter</div>
+  <div class="byline"><a href="#" id="info-link">What the hell is this thing?</a></div>
+
+  <div class="canvas-container">
+    <canvas id="alphaChart" width="300" height="100"></canvas>
+    <div class="gyro-label" id="alphaLabel">Alpha (Z): 0.00</div>
+  </div>
+  <div class="canvas-container">
+    <canvas id="betaChart" width="300" height="100"></canvas>
+    <div class="gyro-label" id="betaLabel">Beta (X): 0.00</div>
+  </div>
+  <div class="canvas-container">
+    <canvas id="gammaChart" width="300" height="100"></canvas>
+    <div class="gyro-label" id="gammaLabel">Gamma (Y): 0.00</div>
+  </div>
+
+  <button id="enable-button">Enable Gyro and Sound</button>
+
+  <label class="toggle-label">
+    Dark Mode
+    <div class="switch">
+      <input type="checkbox" id="theme-toggle" checked>
+      <span class="slider"></span>
+    </div>
+  </label>
+
+  <div id="overlay">
+    <div id="overlay-content">
+      <button id="overlay-close">&times;</button>
+      <h2>What is this?</h2>
+      <p>This is a responsive instrument built for motion-activated interaction using the gyroscope in your mobile device. Move your phone to play bell tones whose pitch and intensity change with your gestures.</p>
+    </div>
+  </div>
+
+  <div style="margin-top: 1rem;">
+    <label for="volume-slider">Volume</label><br>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1" style="width: 90%;">
+  </div>
+
+  <div id="debug-log"><strong>Debug Console:</strong></div>
+
+<script>
+let sampler, gainNode;
+const alphaData = [], betaData = [], gammaData = [];
+const maxPoints = 100;
+
+function log(message) {
+  const logDiv = document.getElementById("debug-log");
+  if (logDiv) {
+    const entry = document.createElement("div");
+    entry.textContent = message;
+    logDiv.appendChild(entry);
+    logDiv.scrollTop = logDiv.scrollHeight;
+  }
+}
+
+function updateGraph(ctx, dataArray, newVal) {
+  if (dataArray.length >= maxPoints) dataArray.shift();
+  dataArray.push(newVal);
+  const min = Math.min(...dataArray);
+  const max = Math.max(...dataArray);
+  const range = max - min || 1;
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  ctx.beginPath();
+  dataArray.forEach((val, i) => {
+    const x = (i / maxPoints) * ctx.canvas.width;
+    const y = ctx.canvas.height * (1 - (val - min) / range);
+    ctx.lineTo(x, y);
+  });
+  ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--accent');
+  ctx.stroke();
+}
+
+const noteMap = [
+  "C3", "C#3", "D3", "D#3", "E3", "F3", "F#3", "G3", "G#3", "A3", "A#3", "B3",
+  "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"
+];
+
+function triggerBell(a, b, g, detune = 0, volume = 0) {
+  if (!sampler) return;
+  sampler.volume.value = volume;
+  if (Math.abs(b) > 30) {
+    const normalizedAlpha = Math.max(-180, Math.min(180, a));
+    const alphaIndex = Math.floor((normalizedAlpha + 180) / 360 * noteMap.length);
+    const pitchNote = noteMap[alphaIndex];
+    const velocity = Math.max(0.1, Math.min(1, Math.abs(b) / 90));
+    sampler.triggerAttack(pitchNote, undefined, velocity);
+    log(`Triggered note: ${pitchNote}, Velocity: ${velocity.toFixed(2)}`);
+  }
+}
+
+document.getElementById('enable-button').addEventListener('click', async () => {
+  log("Starting Tone.js context...");
+  await Tone.start();
+  gainNode = new Tone.Gain(1).toDestination();
+  sampler = new Tone.Sampler({
+    urls: { C4: "./media/archeos-bell.wav" },
+    onload: () => log("Sampler loaded.")
+  }).connect(gainNode);
+
+  const slider = document.getElementById('volume-slider');
+  if (slider) {
+    slider.addEventListener('input', (e) => {
+      const vol = parseFloat(e.target.value);
+      gainNode.gain.value = vol;
+      log(`Master volume: ${vol.toFixed(2)}`);
+    });
+  }
+
+  log("Requesting gyro permission...");
+  if (typeof DeviceMotionEvent.requestPermission === 'function') {
+    DeviceMotionEvent.requestPermission().then(state => {
+      if (state === 'granted') {
+        enableGyro();
+        log("Gyro enabled.");
+        sampler.triggerAttack("C4", undefined, 0.7);
+      } else {
+        log("Gyro permission denied.");
+        alert("Gyroscope access denied.");
+      }
+    });
+  } else {
+    enableGyro();
+    log("Gyro enabled (no permission prompt).");
+  }
+});
+
+function enableGyro() {
+  window.addEventListener('devicemotion', (event) => {
+    const a = event.rotationRate.alpha || 0;
+    const b = event.rotationRate.beta || 0;
+    const g = event.rotationRate.gamma || 0;
+
+    document.getElementById('alphaLabel').textContent = `Alpha (Z): ${a.toFixed(2)}`;
+    document.getElementById('betaLabel').textContent = `Beta (X): ${b.toFixed(2)}`;
+    document.getElementById('gammaLabel').textContent = `Gamma (Y): ${g.toFixed(2)}`;
+
+    updateGraph(document.getElementById("alphaChart").getContext("2d"), alphaData, a);
+    updateGraph(document.getElementById("betaChart").getContext("2d"), betaData, b);
+    updateGraph(document.getElementById("gammaChart").getContext("2d"), gammaData, g);
+
+    const detune = Math.max(-500, Math.min(500, b * 3));
+    const volume = Math.max(-20, Math.min(0, g / 10));
+    triggerBell(a, b, g, detune, volume);
+  });
+}
+
+document.getElementById('theme-toggle').addEventListener('change', (e) => {
+  const dark = e.target.checked;
+  document.body.classList.toggle('light', !dark);
+  document.body.classList.toggle('dark', dark);
+});
+
+document.getElementById('info-link').addEventListener('click', (e) => {
+  e.preventDefault();
+  document.getElementById('overlay').classList.add('active');
+});
+
+document.getElementById('overlay-close').addEventListener('click', () => {
+  document.getElementById('overlay').classList.remove('active');
+});
+</script>
+</body>
+</html>
