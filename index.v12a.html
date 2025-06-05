@@ -5,17 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bob & Jan's Bells</title>
   <!-- <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js" defer>
-window.addEventListener('load', () => {
+// Ensure correct slider thumb placement after DOM renders
+window.addEventListener('DOMContentLoaded', () => {
   if (pitchSlider?.noUiSlider) {
-    pitchSlider.noUiSlider.set([48, 72]); // Reinforce C3–C5 after everything's laid out
+    pitchSlider.noUiSlider.set([48, 72]); // C3 to C5
   }
 });
 
 </script> -->
   <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js">
-window.addEventListener('load', () => {
+// Ensure correct slider thumb placement after DOM renders
+window.addEventListener('DOMContentLoaded', () => {
   if (pitchSlider?.noUiSlider) {
-    pitchSlider.noUiSlider.set([48, 72]); // Reinforce C3–C5 after everything's laid out
+    pitchSlider.noUiSlider.set([48, 72]); // C3 to C5
   }
 });
 
@@ -210,9 +212,10 @@ window.addEventListener('load', () => {
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.js">
-window.addEventListener('load', () => {
+// Ensure correct slider thumb placement after DOM renders
+window.addEventListener('DOMContentLoaded', () => {
   if (pitchSlider?.noUiSlider) {
-    pitchSlider.noUiSlider.set([48, 72]); // Reinforce C3–C5 after everything's laid out
+    pitchSlider.noUiSlider.set([48, 72]); // C3 to C5
   }
 });
 
@@ -496,7 +499,7 @@ noUiSlider.create(pitchSlider, {
   tooltips: [true, true],
   format: {
     to: value => Tone.Frequency(value, "midi").toNote(),
-    from: value => Tone.Frequency(value, "note").toMidi()
+    from: value => Tone.Frequency(value).toMidi()
   }
 });
 
@@ -508,9 +511,10 @@ pitchSlider.noUiSlider.on('update', (values, handle, rawVals) => {
 
 
 
-window.addEventListener('load', () => {
+// Ensure correct slider thumb placement after DOM renders
+window.addEventListener('DOMContentLoaded', () => {
   if (pitchSlider?.noUiSlider) {
-    pitchSlider.noUiSlider.set([48, 72]); // Reinforce C3–C5 after everything's laid out
+    pitchSlider.noUiSlider.set([48, 72]); // C3 to C5
   }
 });
 
@@ -539,9 +543,10 @@ window.addEventListener('load', () => {
     // including sampler creation and Tone.Sampler triggerAttack calls
     
   
-window.addEventListener('load', () => {
+// Ensure correct slider thumb placement after DOM renders
+window.addEventListener('DOMContentLoaded', () => {
   if (pitchSlider?.noUiSlider) {
-    pitchSlider.noUiSlider.set([48, 72]); // Reinforce C3–C5 after everything's laid out
+    pitchSlider.noUiSlider.set([48, 72]); // C3 to C5
   }
 });
 
