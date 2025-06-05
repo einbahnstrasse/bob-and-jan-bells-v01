@@ -477,16 +477,22 @@ noUiSlider.create(pitchSlider, {
   },
   tooltips: [true, true],
   format: {
-    to: value => Tone.Frequency(value, "midi").toNote(),
-    from: value => Tone.Frequency(value, "note").toMidi()
+    to: value => Math.round(value),
+    from: value => Number(value)
   }
 });
 
 let pitchRange = noteMap.slice(48, 73);
+// Override tooltip display with note names
 pitchSlider.noUiSlider.on('update', (values, handle, rawVals) => {
   const [low, high] = rawVals.map(v => Math.round(v));
   pitchRange = noteMap.slice(low, high + 1);
   document.getElementById("pitch-label").textContent = `Pitch Range: ${noteMap[low]} – ${noteMap[high]}`;
+  const tooltips = pitchSlider.querySelectorAll('.noUi-tooltip');
+  if (tooltips.length === 2) {
+    tooltips[0].textContent = noteMap[low];
+    tooltips[1].textContent = noteMap[high];
+  }
 });
 
 
