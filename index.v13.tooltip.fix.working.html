@@ -477,8 +477,8 @@ noUiSlider.create(pitchSlider, {
   },
   tooltips: [true, true],
   format: {
-    to: value => Tone.Frequency(value, "midi").toNote(),
-    from: value => Tone.Frequency(value, "note").toMidi()
+    to: value => Math.round(value),
+    from: value => Number(value)
   }
 });
 
