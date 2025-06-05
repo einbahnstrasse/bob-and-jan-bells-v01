@@ -4,22 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bob & Jan's Bells</title>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js" defer>
-window.addEventListener('load', () => {
-  if (pitchSlider?.noUiSlider) {
-    pitchSlider.noUiSlider.set([48, 72]); // Reinforce C3–C5 after everything's laid out
-  }
-});
-
-</script> -->
-  <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js">
-window.addEventListener('load', () => {
-  if (pitchSlider?.noUiSlider) {
-    pitchSlider.noUiSlider.set([48, 72]); // Reinforce C3–C5 after everything's laid out
-  }
-});
-
-</script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js" defer></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js"></script>
   <style>
     :root {
       --bg-color: #121212;
@@ -209,14 +195,7 @@ window.addEventListener('load', () => {
   </style>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.js">
-window.addEventListener('load', () => {
-  if (pitchSlider?.noUiSlider) {
-    pitchSlider.noUiSlider.set([48, 72]); // Reinforce C3–C5 after everything's laid out
-  }
-});
-
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.js"></script>
 </head>
 
 <body class="dark">
@@ -233,6 +212,7 @@ window.addEventListener('load', () => {
 <div style="display:flex; flex-direction:column; align-items:center; margin-top:1rem;">
   <label for="pitch-slider" style="margin-bottom: 0.5rem;">Pitch Range</label>
   <div id="pitch-slider" style="height: 300px; width: 60px;"></div>
+<div id="pitch-label" style="margin-top: 0.5rem;">Pitch Range: C3 – C5</div>
 </div>
 
 
@@ -244,6 +224,7 @@ window.addEventListener('load', () => {
 <div style="display:flex; flex-direction:column; align-items:center; margin-top:1rem;">
   <label for="pitch-slider" style="margin-bottom: 0.5rem;">Pitch Range</label>
   <div id="pitch-slider" style="height: 300px; width: 60px;"></div>
+<div id="pitch-label" style="margin-top: 0.5rem;">Pitch Range: C3 – C5</div>
 </div>
 
 
@@ -255,6 +236,7 @@ window.addEventListener('load', () => {
 <div style="display:flex; flex-direction:column; align-items:center; margin-top:1rem;">
   <label for="pitch-slider" style="margin-bottom: 0.5rem;">Pitch Range</label>
   <div id="pitch-slider" style="height: 300px; width: 60px;"></div>
+<div id="pitch-label" style="margin-top: 0.5rem;">Pitch Range: C3 – C5</div>
 </div>
 
 
@@ -495,8 +477,8 @@ noUiSlider.create(pitchSlider, {
   },
   tooltips: [true, true],
   format: {
-    to: value => Tone.Frequency(value, "midi").toNote(),
-    from: value => Tone.Frequency(value, "note").toMidi()
+    to: value => Math.round(value),
+    from: value => Number(value)
   }
 });
 
@@ -504,15 +486,9 @@ let pitchRange = noteMap.slice(48, 73);
 pitchSlider.noUiSlider.on('update', (values, handle, rawVals) => {
   const [low, high] = rawVals.map(v => Math.round(v));
   pitchRange = noteMap.slice(low, high + 1);
+  document.getElementById("pitch-label").textContent = `Pitch Range: ${noteMap[low]} – ${noteMap[high]}`;
 });
 
-
-
-window.addEventListener('load', () => {
-  if (pitchSlider?.noUiSlider) {
-    pitchSlider.noUiSlider.set([48, 72]); // Reinforce C3–C5 after everything's laid out
-  }
-});
 
 </script>
 
@@ -538,14 +514,7 @@ window.addEventListener('load', () => {
     // everything from log(), playSound(), gyro listener, theme toggle, etc.
     // including sampler creation and Tone.Sampler triggerAttack calls
     
-  
-window.addEventListener('load', () => {
-  if (pitchSlider?.noUiSlider) {
-    pitchSlider.noUiSlider.set([48, 72]); // Reinforce C3–C5 after everything's laid out
-  }
-});
-
-</script>
+  </script>
 
 </body>
 </html>
