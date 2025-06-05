@@ -52,7 +52,7 @@
 
     .canvas-container {
       position: relative;
-      margin-top: 0.5rem;
+      margin-top: 1rem;
     }
 
     .gyro-label {
@@ -73,7 +73,7 @@
     }
 
     #enable-button {
-      margin-top: 0.5rem;
+      margin-top: 1rem;
       padding: 1rem 2rem;
       font-size: 1rem;
       background-color: var(--accent);
@@ -87,7 +87,7 @@
     }
 
     .toggle-label {
-      margin-top: 0.5rem;
+      margin-top: 1rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -199,18 +199,7 @@
 </head>
 
 <body class="dark">
-  
-<div style="display: flex; flex-direction: row; align-items: flex-start; justify-content: center; gap: 2rem;">
-  <!-- Pitch slider column -->
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <label for="pitch-slider" style="margin-bottom: 0.5rem;">Pitch Range</label>
-    <div id="pitch-slider" style="height: 300px; width: 10px;"></div>
-    <div id="pitch-label" style="margin-top: 0.5rem;">Pitch Range: C3 – C5</div>
-  </div>
-
-  <!-- Main content column -->
-  <div style="flex: 1;">
-<h1>Bob & Jan's Bells</h1>
+  <h1>Bob & Jan's Bells</h1>
   <div class="byline">Love, <a href="https://louisgoldford.com" target="_blank">Louis</a> and Eszter</div>
   <div class="byline">
     <a href="#" id="info-link">What the hell is this thing?</a>
@@ -221,9 +210,9 @@
 
   
 <div style="display:flex; flex-direction:column; align-items:center; margin-top:1rem;">
-  <label for="pitch-slider" style="margin-bottom: 0.5rem;">Pitch Range</label>
-  <div id="pitch-slider" style="height: 300px; width: 10px;"></div>
-<div id="pitch-label" style="margin-top: 0.5rem;">Pitch Range: C3 – C5</div>
+  <label for="pitch-slider" style="margin-bottom: 0.5rem;">Pitch<br>Range</label>
+  <div id="pitch-slider" style="height: 300px; width: 16px;"></div>
+<!-- <div id="pitch-label" style="margin-top: 0.5rem;">Pitch Range: C3 – C5</div> -->
 </div>
 
 
@@ -234,7 +223,7 @@
   
 <div style="display:flex; flex-direction:column; align-items:center; margin-top:1rem;">
   <label for="pitch-slider" style="margin-bottom: 0.5rem;">Pitch Range</label>
-  <div id="pitch-slider" style="height: 300px; width: 10px;"></div>
+  <div id="pitch-slider" style="height: 300px; width: 60px;"></div>
 <div id="pitch-label" style="margin-top: 0.5rem;">Pitch Range: C3 – C5</div>
 </div>
 
@@ -246,7 +235,7 @@
   
 <div style="display:flex; flex-direction:column; align-items:center; margin-top:1rem;">
   <label for="pitch-slider" style="margin-bottom: 0.5rem;">Pitch Range</label>
-  <div id="pitch-slider" style="height: 300px; width: 10px;"></div>
+  <div id="pitch-slider" style="height: 300px; width: 60px;"></div>
 <div id="pitch-label" style="margin-top: 0.5rem;">Pitch Range: C3 – C5</div>
 </div>
 
@@ -258,7 +247,7 @@
 
   <button id="enable-button">Enable Gyro and Sound</button>
 
-<label for="bell-select" style="margin-top: 0.5rem; display: block;">Choose a bell:</label>
+<label for="bell-select" style="margin-top: 1rem; display: block;">Choose a bell:</label>
 <select id="bell-select" style="font-size: 1rem; padding: 0.3rem; margin-bottom: 1rem;">
   <option value="archeos-bell.wav" selected>Archeos Bell</option>
   <option value="BigBend.wav">Big Ben (London)</option>
@@ -494,18 +483,6 @@ noUiSlider.create(pitchSlider, {
 });
 
 let pitchRange = noteMap.slice(48, 73);
-
-// Add pitch labels (tick marks) to the vertical slider
-pitchSlider.noUiSlider.pips({
-  mode: 'values',
-  values: [24, 36, 48, 60, 72, 84, 96],  // C2 to C7
-  density: 10,
-  format: {
-    to: value => Tone.Frequency(value, "midi").toNote(),
-    from: () => {}
-  }
-});
-
 // Override tooltip display with note names
 pitchSlider.noUiSlider.on('update', (values, handle, rawVals) => {
   const [low, high] = rawVals.map(v => Math.round(v));
@@ -521,9 +498,7 @@ pitchSlider.noUiSlider.on('update', (values, handle, rawVals) => {
 
 </script>
 
-  </div>
-
-<div id="debug-log" style="
+  <div id="debug-log" style="
       width: 90%;
       max-height: 200px;
       overflow-y: auto;
