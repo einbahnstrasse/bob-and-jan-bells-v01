@@ -203,13 +203,6 @@
 <div style="display:flex; align-items: flex-start; gap: 2rem;">
   <div style="height:300px; margin-top:2rem;" id="pitch-slider"></div>
   <div style="flex: 1;">
-
-<div style="display: flex; gap: 2rem; flex-wrap: wrap;">
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <label for="pitch-slider" style="margin-bottom: 0.5rem;">Pitch Range</label>
-    <div style="height: 300px; width: 60px;" id="pitch-slider"></div>
-  </div>
-  <div style="flex: 1; min-width: 280px;">
 <h1>Bob & Jan's Bells</h1>
   <div class="byline">Love, <a href="https://louisgoldford.com" target="_blank">Louis</a> and Eszter</div>
   <div class="byline">
@@ -234,25 +227,7 @@
 
   <button id="enable-button">Enable Gyro and Sound</button>
 
-  
   <label class="toggle-label">
-    Mute
-    <div class="switch">
-      <input type="checkbox" id="mute-toggle">
-      <span class="slider"></span>
-    </div>
-  </label>
-
-  <label for="bell-select" style="margin-top: 1rem; display: block;">Choose a bell:</label>
-  <select id="bell-select" style="font-size: 1rem; padding: 0.3rem; margin-bottom: 1rem;">
-    <option value="archeos-bell.wav" selected>Archeos Bell</option>
-    <option value="BigBend.wav">Big Ben (London)</option>
-    <option value="WinchesterBell.wav">Winchester Bell</option>
-    <option value="NotreDameParis.wav">Notre Dame (Paris)</option>
-  </select>
-
-
-<label class="toggle-label">
     Dark Mode
     <div class="switch">
       <input type="checkbox" id="theme-toggle" checked>
@@ -453,13 +428,14 @@ pitchSlider.noUiSlider.on('update', (values, handle, rawVals) => {
 });
 
 
-
+// const noteMap = [
+//   "C3", "C#3", "D3", "D#3", "E3", "F3", "F#3", "G3", "G#3", "A3", "A#3", "B3",
+//   "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"
+// ];
 
 </script>
 
   </div>
-
-</div>
 
 <div id="debug-log" style="
       width: 90%;
