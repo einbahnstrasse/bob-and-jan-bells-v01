@@ -110,9 +110,9 @@ document.getElementById('enable-button').addEventListener('click', async () => {
       const b = event.rotationRate.beta || 0;
       const g = event.rotationRate.gamma || 0;
 
-      document.getElementById('alphaLabel').textContent = `Pitch (left ↔ right): ${a.toFixed(2)}`;
-      document.getElementById('betaLabel').textContent = `Trigger (front ↔ back): ${b.toFixed(2)}`;
-      document.getElementById('gammaLabel').textContent = `Volume (side ↔ side): ${g.toFixed(2)}`;
+      document.getElementById('alphaLabel').textContent = `Pitch (<em><b>rotate</b></em> left &#x2194; right): ${a.toFixed(2)}`;
+      document.getElementById('betaLabel').textContent = `Trigger (<em><b>tilt</b></em> front &#x2194; back): ${b.toFixed(2)}`;
+      document.getElementById('gammaLabel').textContent = `Volume (<em><b>lean</b></em> side &#x2194; side): ${g.toFixed(2)}`;
 
       updateGraph(alphaChart.getContext('2d'), alphaData, a);
       updateGraph(betaChart.getContext('2d'), betaData, b);
