@@ -177,10 +177,15 @@ canvas {
 
 .toggle-label {
   margin-top: 1rem;
+  margin-right: 1rem;      
+  /* Spacing between switches */
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1rem;
+  /* font-size: 1rem; */
+  font-size: 0.8rem;       /* Slightly smaller text */
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .toggle-row {
@@ -189,12 +194,16 @@ canvas {
   gap: 2rem;
   margin-top: 1rem;
   margin-left: 1em;
+  flex-wrap: nowrap;
+
 }
 
 .switch {
   position: relative;
   display: inline-block;
   width: 60px;
+  min-width: 60px;
+  max-width: 60px;
   height: 34px;
     /* Reduce the overall size of the toggle switch */
   transform: scale(0.85); /* Try 0.75 or 0.9 for fine-tuning */
@@ -203,12 +212,6 @@ canvas {
 
 .switch input {
   display: none;
-}
-
-/* Optional: Adjust spacing if needed */
-.toggle-label {
-  font-size: 0.9rem;       /* Slightly smaller text */
-  margin-right: 1rem;      /* Spacing between switches */
 }
 
 .slider {
@@ -400,12 +403,16 @@ input:checked + .slider:before {
   flex-direction: column;
   align-items: center;
   justify-content: stretch;
-  margin-top: 2rem;
-  /* height: calc(100vh - 100px);  */
+  margin-top: 0.5rem;
+  height: calc(100vh - 100px); 
   /* Adjust offset for menu/header */
-  height: 100vh;
+  /* height: 480px; */
   /* trying this to see if it works */
   min-height: 300px;
+}
+
+label[for="pitch-slider"] {
+  padding-bottom: 1.5rem;
 }
 
 .content-column {
@@ -437,7 +444,7 @@ input:checked + .slider:before {
   padding: 0.5rem 1rem;
 }
 
-/* @media (max-width: 600px) {
+@media (max-width: 600px) {
   .pitch-slider-wrapper {
     max-height: 450px;
   }
@@ -453,7 +460,7 @@ input:checked + .slider:before {
   .pitch-slider-wrapper {
     max-height: 300px;
   }
-} */
+}
 
 #overlay-howto {
   position: fixed;
