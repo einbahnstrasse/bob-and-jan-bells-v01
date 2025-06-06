@@ -1,5 +1,5 @@
 @font-face {
-  font-family: "RobotoFlexLocal";
+  font-family: "Roboto Flex";
   src: url("fonts/Roboto_Flex/RobotoFlex-VF.ttf") format("truetype");
   font-weight: 100 1000;
   font-stretch: 25% 151%;
@@ -267,14 +267,12 @@ input:checked + .slider:before {
   left: 0;
   right: 0;
   bottom: 0;
-  /* background: rgba(0, 0, 0, 0.85); */
-  /* color: white; */
-  background: rgba(0, 0, 0, 0.95); /* darker for better readability */
+  background: rgba(0, 0, 0, 0.95); 
   color: white;
   display: none;
   justify-content: center;
-  /* align-items: center; */
-  align-items: flex-start;
+  align-items: center;  
+  overflow: hidden;  
   padding: 2rem;
   font-size: 0.9rem;
   text-align: left;
@@ -503,7 +501,12 @@ label[for="pitch-slider"] {
 
 #overlay-content-howto {
   max-width: 600px;
+  max-height: 100%;
   margin-top: 2rem;
+  overflow-y: auto;     /* Enable vertical scroll here */
+  padding: 1rem;
+  box-sizing: border-box;
+  background: transparent;
 }
 
 #overlay-close-howto {
@@ -536,7 +539,7 @@ a:hover {
 } */
 
 .animated-title {
-  font-family: "RobotoFlexLocal", sans-serif;
+  font-family: "Roboto Flex", sans-serif;
   font-weight: 700;
   font-variation-settings: 
     "wght" 700,  
@@ -567,7 +570,15 @@ a:hover {
 } */
 
 h2, h3, h4, h5, h6 {
-  font-family: "RobotoFlexLocal", sans-serif;
+  font-family: "Roboto Flex", sans-serif;
   font-size: 1rem;
   font-variation-settings: "wdth" 900;
+}
+
+#overlay.active,
+#overlay-help.active,
+#overlay-howto.active,
+#overlay-credits.active {
+  display: block; /* Use block instead of flex */
+  overflow-y: auto;
 }

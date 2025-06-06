@@ -129,6 +129,12 @@
 
       <p>Move your phone in any direction to generate bell sounds. How you move the phone determines what the synthesizer does, as explained below in the section <em>Gyroscope Controls</em>.</p>
 
+      <h3>Mute Toggle</h3>
+      At any time, toggle MUTE to start and stop sound. 
+
+      <h3>Pitch Range</h3>
+      Move the 2 blue handles along the vertical lefthand slider to adjust the range of pitches in which your phone generates bell sounds. You have 7 octaves available to you. Go nuts.
+
       <h3>Choice of Bell Sounds</h3>
       At any point, you can change the sound by choosing a different bell from the dropdown menu labeled "Choose a bell." Below is a list of each bell sound.
 
@@ -166,20 +172,81 @@
       <p>Explore these movements gently and gradually. Subtle motions often produce the most nuanced musical responses!</p>
   </div>
 </div>
-  <div id="overlay-help"><div id="overlay-content-help"><button id="overlay-close-help">&times;</button><p>Help content here.</p></div></div>
+  <div id="overlay-help"><div id="overlay-content-help">
+    <button id="overlay-close-help">&times;</button>
+    <h2>Help</h2>
+     <h3>START Button</h3>
+      <p>
+        When you initially load this page for the first time, you may need to click the START button (in blue) <em>more than once</em> in order to bring up a contextual menu. This menu grants the page permission to use your mobile device’s gyroscope and to initiate the audio context. 
+      </p>
+      <p>
+        You may need to refresh the page or press the START button several times before the contextual permission prompt appears. Once it does, be sure to press <strong>OK</strong> or grant permission in whatever way your device asks. This step is required in order to hear sound and to begin the flow of gyroscope data across the screen. 
+      </p>
+      <p>Don't worry — there is no security risk here. I'm just a guy trying to make sound for his friends. I'm not recording your phone or doing anything weird, and your data is safe with you, and only you.</p>
+
+      <h3>Not Hearing Sound?</h3>
+        <p>
+          Once you’ve granted permission, you should see blue curves flowing across the screen — indicating that your device’s gyroscope is working — and you should begin to hear sound right away.
+        </p>
+        <p>
+          If you do not hear sound at this point, make sure your phone is <em>not in silent mode</em> and that your phone's volume is turned up. If you still don’t hear anything, try refreshing the page. If the issue persists, you may need to clear your mobile browser’s cache or delete your browsing history, especially if you’ve attempted this process multiple times.
+        </p>
+
+        <h3>Freezing</h3>
+      <p>
+        If your web browser or device suddenly freezes, or if your device falls asleep or enters a screensaver mode, you’ll simply need to unlock it, refresh the page, and start over. This will reinitialize the audio and gyroscope systems. Pretty simple.  
+      </p>
+
+      <h3>Disclaimer</h3>
+        <p>
+          This web app has been designed with platform-agnostic accessibility in mind, functioning as a lightweight, browser-based interface intended to run on any modern mobile device — whether iOS or Android — equipped with gyroscope support and a web browser. 
+        </p>
+        <p>
+          It has been tested exclusively on iOS — on an Apple iPhone 13 Pro. I built this quickly over a couple of days and didn’t test it on other devices. Android users: proceed with caution and operate at your own risk. 🤷  
+        </p>
+        <p>          
+          Your experience may vary depending on your hardware and web browser.
+        </p>
+  </div>
+</div>
   <div id="overlay-credits">
     <div id="overlay-content-credits">
       <button id="overlay-close-credits">&times;</button>
+     <h2>Credits</h2>
       <p>&copy; 2025 Louis Goldford. All rights reserved.</p>
       <p>This work is licensed under a 
         <a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">
-        Creative Commons Attribution-NonCommercial 4.0 International License
-      </a>.
+        Creative Commons Attribution-NonCommercial 4.0 International License</a>.
     </p>
     <a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">
       <img alt="Creative Commons License" style="border-width:0"
            src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" />
     </a>
+
+    <h3>Software Libraries</h3>
+      <p>
+        This web app was built using <a href="https://tonejs.github.io/" target="_blank" rel="noopener noreferrer">Tone.js</a>, a powerful framework for creating interactive music in the browser.
+      </p>
+      <p>
+        It also uses a lightweight JavaScript slider interface inspired by <a href="https://refreshless.com/nouislider/" target="_blank" rel="noopener noreferrer">noUiSlider</a>, as well as native browser features like the Web Audio API and DeviceOrientation events.
+      </p>
+      <p>
+        Special thanks to the open-source contributors who make these libraries available for creative experimentation across platforms. 🙌
+      </p>
+
+      <h3>Audio Samples + Field Recordings</h3>
+        <p>
+          <a href="https://freesound.org/people/hyderpotter/sounds/80290/" target="_blank" rel="noopener noreferrer">BigBenstrikes.mp3</a> by <a href="https://freesound.org/people/hyderpotter/" target="_blank" rel="noopener noreferrer">hyderpotter</a>, 
+          '<a href="https://freesound.org/people/felix.blume/sounds/501115/" target="_blank" rel="noopener noreferrer">Peal of church bells on Sunday in Paris</a>' by 
+          <a href="https://freesound.org/people/felix.blume/" target="_blank" rel="noopener noreferrer">felix.blume</a>, and 
+          <a href="https://freesound.org/people/Archeos/sounds/174725/" target="_blank" rel="noopener noreferrer">bell_sound_B.wav</a> by 
+          <a href="https://freesound.org/people/Archeos/" target="_blank" rel="noopener noreferrer">Archeos</a> are used under the Creative Commons 0 licence at <a href="https://freesound.org/" target="_blank" rel="noopener noreferrer">Freesound.org</a>.
+        </p>
+
+        <p>
+          <code>winchester-bell.wav</code> is the tenor bell of Winchester Cathedral, recorded by John Whiting for Jonathan Harvey’s <a href="https://en.wikipedia.org/wiki/Mortuos_Plango,_Vivos_Voco" target="_blank" rel="noopener noreferrer"><em>Mortuos Plango, Vivos Voco</em> (1980)</a> and is included in the 
+          <a href="https://forum.ircam.fr/projects/detail/orchidea/" target="_blank" rel="noopener noreferrer">Orchidea examples</a> courtesy of IRCAM/CNMAT (Ircam Forum licence).
+        </p>
     </div>
   </div>
   <script src="script.v01.js"></script>
