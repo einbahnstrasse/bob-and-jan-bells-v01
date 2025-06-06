@@ -1,3 +1,20 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const title = document.querySelector(".animated-title");
+
+  function randomizeFont() {
+    const wght = Math.floor(Math.random() * 300) + 200;
+    const wdth = Math.floor(Math.random() * 100) + 100;
+
+    title.style.fontVariationSettings = `"wght" ${wght}, "wdth" ${wdth}`;
+
+    const nextDelay = Math.random() * 100 + 40;
+    setTimeout(randomizeFont, nextDelay);
+  }
+
+  randomizeFont();
+});
+
+
 let sampler;
 const gainNode = new Tone.Gain().toDestination();
 

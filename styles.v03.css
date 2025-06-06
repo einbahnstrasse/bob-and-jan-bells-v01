@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "RobotoFlexLocal";
+  src: url("fonts/Roboto_Flex/RobotoFlex-VF.ttf") format("truetype");
+  font-weight: 100 1000;
+  font-stretch: 25% 151%;
+  font-style: normal;
+}
+
 body.dark {
   --bg-color: #121212;
   --text-color: #fff;
@@ -13,7 +21,7 @@ body.light {
 }
 
 body {
-  font-family: sans-serif;
+  font-family: 'Inter', sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,6 +33,10 @@ body {
   text-align: center;
   min-height: 100vh;
   transition: background 0.3s, color 0.3s;
+}
+
+h1, h2, h3 {
+  font-family: 'Roboto Flex', sans-serif;
 }
 
 h1 {
@@ -497,3 +509,52 @@ label[for="pitch-slider"] {
   border: none;
   cursor: pointer;
 }
+
+/* Unified global link color for both light and dark modes */
+a {
+  color: var(--accent);
+}
+
+/* Optional hover effect */
+a:hover {
+  text-decoration: underline;
+}
+
+/* h1 {
+  font-family: 'Roboto Flex', sans-serif;
+  font-weight: 500;
+  animation: stretchText 6s ease-in-out infinite alternate;
+  display: inline-block;
+  font-variation-settings: "wdth" 100;
+} */
+
+.animated-title {
+  font-family: "RobotoFlexLocal", sans-serif;
+  font-weight: 700;
+  font-variation-settings: 
+    "wght" 700,  
+    "wdth" 100; 
+  animation: stretchText 6s ease-in-out infinite alternate;
+  display: inline-block;
+}
+
+/* 
+@keyframes stretchText {
+  0% {
+    font-variation-settings: "wght" 100, "wdth" 400;
+  }
+  100% {
+    font-variation-settings: "wght" 500, "wdth" 400;
+  }
+} */
+
+
+/* 
+ @keyframes stretchText {
+  from {
+    font-variation-settings: "wght" 100, "wdth" 90;
+  }
+  to {
+    font-variation-settings: "wght" 500, "wdth" 110;
+  }
+} */
