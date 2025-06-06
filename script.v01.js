@@ -155,6 +155,34 @@ document.getElementById('overlay-close-credits').addEventListener('click', () =>
   document.getElementById('overlay-credits').classList.remove('active');
 });
 
+document.getElementById("howto-link").addEventListener("click", function (e) {
+  e.preventDefault();
+  document.getElementById("overlay-howto").classList.add("active");
+});
+
+// maybe this one is better:
+// document.getElementById('howto-link').addEventListener('click', function () {
+//   document.getElementById('overlay-howto').classList.add('active');
+//   document.getElementById('menu-toggle').checked = false; 
+// });
+
+document.getElementById('overlay-close-howto').addEventListener('click', () => {
+  document.getElementById('overlay-howto').classList.remove('active');
+});
+
+document.getElementById('howto-link').addEventListener('click', function (e) {
+  e.preventDefault();
+  document.getElementById('overlay-howto').classList.add('active');
+});
+
+document.getElementById('overlay-close-howto').addEventListener('click', function () {
+  document.getElementById('overlay-howto').classList.remove('active');
+});
+
+
+
+
+
 const noteMap = Array.from({ length: 128 }, (_, i) => Tone.Frequency(i, "midi").toNote());
 
 const pitchSlider = document.getElementById("pitch-slider");
@@ -213,3 +241,4 @@ document.querySelectorAll('.menu a').forEach(link => {
 document.getElementById('menu-close').addEventListener('click', () => {
   document.getElementById('menu-toggle').checked = false;
 });
+

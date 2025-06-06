@@ -245,6 +245,7 @@ input:checked + .slider:before {
 
 #overlay,
 #overlay-help,
+#overlay-howto,
 #overlay-credits {
   position: fixed;
   top: 0;
@@ -270,12 +271,14 @@ input:checked + .slider:before {
 
 #overlay-content,
 #overlay-content-help,
+#overlay-content-howto,
 #overlay-content-credits {
   max-width: 600px;
 }
 
 #overlay-close,
 #overlay-close-help,
+#overlay-close-howto,
 #overlay-close-credits {
   position: absolute;
   top: 1rem;
@@ -398,7 +401,10 @@ input:checked + .slider:before {
   align-items: center;
   justify-content: stretch;
   margin-top: 2rem;
-  height: calc(100vh - 100px); /* Adjust offset for menu/header */
+  /* height: calc(100vh - 100px);  */
+  /* Adjust offset for menu/header */
+  height: 100vh;
+  /* trying this to see if it works */
   min-height: 300px;
 }
 
@@ -447,4 +453,40 @@ input:checked + .slider:before {
   .pitch-slider-wrapper {
     max-height: 300px;
   }
+}
+
+#overlay-howto {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  font-size: 0.9rem;
+  text-align: left;
+  z-index: 999;
+}
+
+#overlay-howto.active {
+  display: flex;
+}
+
+#overlay-content-howto {
+  max-width: 600px;
+}
+
+#overlay-close-howto {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
