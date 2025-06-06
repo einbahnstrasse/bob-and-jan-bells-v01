@@ -437,7 +437,7 @@ input:checked + .slider:before {
   padding: 0.5rem 1rem;
 }
 
-@media (max-width: 600px) {
+/* @media (max-width: 600px) {
   .pitch-slider-wrapper {
     max-height: 450px;
   }
@@ -453,7 +453,7 @@ input:checked + .slider:before {
   .pitch-slider-wrapper {
     max-height: 300px;
   }
-}
+} */
 
 #overlay-howto {
   position: fixed;
